@@ -202,6 +202,7 @@ Routes are thin. Proposed map (update when a route is actually created):
 | `/batteries` | `features/battery-leasing` | List + placeholder map. `?view=map`, `?battery=<id>` selects, `&sheet=details` opens the details sheet (deep link) |
 | `/batteries/lease` | `features/battery-leasing` | Lease wizard **and** the simulated payment phase (`?battery=<id>`). One route keeps the single wizard state object |
 | `/leases` | `features/battery-leasing` | Lease management. `?tab=completed\|overdue`, `?lease=<id>` opens the detail view |
+| `/trading` | `features/trading` | Battery tracking + energy trading. `?tab=market\|tracking\|portfolio`, `?sort=price\|nearby\|energy`, `?offer=<id>` opens the buy sheet, `&sheet=new-offer` opens the offer sheet |
 
 Not created (superseded): `/batteries/[batteryId]` → `?battery=&sheet=details`; `/batteries/lease/payment` → payment phase inside `/batteries/lease`; `/notifications` → notification sheet opened from the dashboard bell.
 
@@ -352,3 +353,4 @@ Small, append-only. New decisions need the human's approval.
 | 2026-10-28 | Palette deferred | Design direction approved, values not chosen |
 | 2026-10-28 | Mock email/password login at `/login` + `/signup`, hardcoded demo credentials shown on screen | Human-approved base screen; real login will be Internet Identity behind an adapter. No session is created |
 | 2026-10-28 | Neutral placeholder token values in `globals.css` | Human-approved so components can use token names before the palette is chosen |
+| 2026-10-28 | Energy trading + battery tracking on `/trading`, with a fourth bottom-nav item | Human-approved scope change; the roadmap previously excluded trading screens. Still mock-only, with URL-held view state |

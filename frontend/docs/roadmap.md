@@ -1,6 +1,6 @@
 # Frontend Roadmap
 
-**Source:** the Dashboard Development / Battery Management Interface checklist.
+**Source:** the Dashboard Development / Battery Management Interface / Battery Tracking / Energy Trading UI checklist.
 **Scope:** frontend only, mock data only. Nothing here integrates with a canister, a payment provider, or hardware yet.
 **Read first:** [`rules.md`](./rules.md) · [`architecture.md`](./architecture.md) · [`design.md`](./design.md) for UI work.
 **Last updated:** 2026-10-28
@@ -25,6 +25,12 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | 2.3 | Lease creation wizard | `[~]` built; needs manual 360px + keyboard check |
 | 2.4 | Payment interface | `[~]` built; needs manual 360px + keyboard check |
 | 2.5 | Lease management panel | `[~]` built; needs manual 360px + keyboard check |
+| 3.1 | Battery tracking (GPS preview, health, usage, alerts) | `[~]` built; needs manual 360px + keyboard check |
+| 3.2 | Marketplace browser | `[~]` built; needs manual 360px + keyboard check |
+| 3.3 | Create offer interface | `[~]` built; needs manual 360px + keyboard check |
+| 3.4 | Trade execution UI | `[~]` built; needs manual 360px + keyboard check |
+| 3.5 | Portfolio management | `[~]` built; needs manual 360px + keyboard check |
+| 3.6 | Trading history | `[~]` built; needs manual 360px + keyboard check |
 
 ---
 
@@ -34,6 +40,7 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 | --- | --- | --- | --- |
 | Dashboard | `features/dashboard/` | `dashboard.tsx` | `/`, `/notifications` |
 | Battery leasing | `features/battery-leasing/` | `battery-leasing.tsx` | `/batteries`, `/batteries/[batteryId]`, `/batteries/lease`, `/leases` |
+| Energy trading + tracking | `features/trading/` | `trading.tsx` | `/trading` (`?tab=market\|tracking\|portfolio`, `?sort=`, `?offer=`, `&sheet=new-offer`) |
 
 Route choices are proposals until the first route is created; update `architecture.md` §6 and this table together.
 
@@ -339,6 +346,77 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 
 ---
 
+# Epic 3 — Energy Trading + Battery Tracking
+
+Feature: `features/trading/`
+Root: `trading.tsx`
+Route: `/trading` (human-approved scope change; see `architecture.md` §13)
+Outcome: a user can watch a battery's live state, browse peer offers, list spare energy, simulate a trade, and review their portfolio.
+
+All values are mock data. Trades and offers live in memory and reset on reload. No canister, payment, map provider, or GPS service is involved.
+
+## 3.1 Battery tracking `[~]`
+
+**Files:** `features/trading/components/battery-tracking-panel.tsx`, `tracking-map.tsx`, `usage-chart.tsx`, `features/trading/hooks/use-battery-tracking.ts`
+
+**UI:** live charge and health meters, estimated range, kiosk and distance, a labelled placeholder GPS preview with updating coordinates, seven-day usage chart, and maintenance alerts with text + tone.
+
+**States:** loading skeleton, empty ("No battery to track" + "Find a battery"), error + retry, ready.
+
+**Done when:** the interval cleans up, health stays distinct from charge, the chart has an accessible table equivalent, and simulated data is labelled.
+
+## 3.2 Marketplace browser `[~]`
+
+**Files:** `features/trading/components/market-browser.tsx`
+
+**UI:** open offers with seller, battery, pickup kiosk, distance, health, available kWh, and price per kWh. Sort by price, distance, or energy. "Create offer" is the single primary action.
+
+**States:** loading, empty ("No open offers" + create action), error, ready.
+
+**Done when:** every offer is reachable by keyboard, the sort control exposes its state, and prices use `Intl` currency formatting.
+
+## 3.3 Create offer interface `[~]`
+
+**Files:** `features/trading/components/create-offer-sheet.tsx`
+
+**UI:** sheet with the tracked battery, spare energy (bounded by charge), price per kWh, and potential earnings. Per-field errors, one primary action.
+
+**States:** no battery, invalid fields, ready, submitted (in-memory only).
+
+**Done when:** validation is announced and linked to fields, the sheet traps focus, and the demo label is visible.
+
+## 3.4 Trade execution UI `[~]`
+
+**Files:** `features/trading/components/trade-sheet.tsx`, `features/trading/hooks/use-market.ts`
+
+**UI:** quantity input with minimum and available limits, live total, confirmed receipt. Simulated success/failure; no real payment.
+
+**States:** idle, processing (button locked), success, failure (retry), cancelled.
+
+**Done when:** double submission is impossible, failure preserves the draft, and no network call is introduced.
+
+## 3.5 Portfolio management `[~]`
+
+**Files:** `features/trading/components/portfolio-panel.tsx`
+
+**UI:** earned/spent this month, energy traded, live open-offer count, own offers with a confirmation sheet before cancelling.
+
+**States:** loading, empty ("No trading activity yet"), error, ready, action success/failure.
+
+**Done when:** cancelling requires confirmation with the consequence spelled out, and the open-offer count matches the list.
+
+## 3.6 Trading history `[~]`
+
+**Files:** `features/trading/components/portfolio-panel.tsx`
+
+**UI:** newest-first buys and sells with counterparty, energy, amount, and timestamp. Amounts are signed and paired with "Bought"/"Sold" text.
+
+**States:** loading, empty ("No trades yet"), error, ready.
+
+**Done when:** dates use `Intl`, no raw minor units appear, and direction is not conveyed by color alone.
+
+---
+
 ## Suggested build order
 
 1. App shell + tokens + `Button`/`Card`/`StatusPill`.
@@ -351,6 +429,7 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 8. 2.3 Lease wizard (largest state surface).
 9. 2.4 Payment (state machine + failure paths).
 10. 2.5 Lease management (mutations + confirmations).
+11. 3.1–3.6 Trading + tracking (reuses cards, sheets, meters, and mock-load patterns).
 
 Rationale: each step reuses primitives built by the previous one, and the riskiest unknowns (map provider, wizard state) come after the patterns are proven.
 
@@ -361,7 +440,7 @@ Rationale: each step reuses primitives built by the previous one, and the riskie
 - Real canister calls, Internet Identity login, or session handling.
 - Real payments, ckBTC/ICRC transfers, or wallet connections.
 - Real GPS tracking, live telemetry, or hardware integration.
-- Energy trading screens (create offer, order book, settlement). Only the read-only summary is in scope.
+- Order matching, settlement, withdrawals, and real ckBTC/ICRC transfers. The trading screens are mock-only; the dashboard summary is no longer the only trading surface.
 - Push notifications, email, SMS.
 - Backend persistence, database, or API routes.
 - Authentication-gated layouts.

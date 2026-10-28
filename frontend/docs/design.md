@@ -280,6 +280,34 @@ States: idle → processing → success → failure (retry, change method). Neve
 
 Tabs: Active · Completed · Overdue. Each lease row: battery, status pill, time remaining, amount, chevron. Detail view: timeline, extend, report issue, return. Destructive actions use a confirmation sheet with the consequence spelled out.
 
+### 8.7 Energy trading + tracking
+
+```
+Header: "Energy trading"
+[ Market ] [ Tracking ] [ Portfolio ]   view tabs, URL-held
+
+Market
+┌───────────────────────────────┐
+│ [ Create offer ]              │  primary
+│ Price   Nearest   Energy      │  sort
+│ ┌───────────────────────────┐ │
+│ │ Maria S.          ● Open  │ │
+│ │ 3.5 kWh spare             │ │
+│ │ ₱18.50 / kWh   [ Buy ]    │ │
+│ └───────────────────────────┘ │
+└───────────────────────────────┘
+
+Tracking: large charge, charge + health meters, kiosk,
+placeholder GPS preview, 7-day usage bars, maintenance alerts.
+Portfolio: earned this month, live open offers (cancel with
+confirmation), newest-first buy/sell history.
+
+Primary per view: Create offer (Market), nothing decorative
+(Tracking), Create offer when empty (Portfolio). Trade and
+create-offer actions open sheets. Every value is demo data;
+the GPS preview is labelled simulated and never the only
+way to read the location.
+
 ---
 
 ## 9. Content style

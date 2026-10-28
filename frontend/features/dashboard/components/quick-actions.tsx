@@ -33,7 +33,7 @@ export function QuickActions({ trackedBatteryId, activeLease, overdueLeaseId }: 
           reason: "Nothing to pay right now. Leases are paid when you start them.",
         },
     trackedBatteryId
-      ? { kind: "link", label: "Track", icon: MapPinIcon, href: `/batteries?battery=${trackedBatteryId}&sheet=details` }
+      ? { kind: "link", label: "Track", icon: MapPinIcon, href: "/trading?tab=tracking" }
       : { kind: "disabled", label: "Track", icon: MapPinIcon, reason: "Lease a battery to track it." },
   ];
 

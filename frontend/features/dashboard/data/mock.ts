@@ -24,7 +24,7 @@ export const mockQuickActionsContext: QuickActionsContext = (() => {
 export const mockTradingSummary: TradingSummary = {
   earnedMinorUnits: 124_000,
   kwhSold: 12.4,
-  openOffers: 3,
+  openOffers: 2,
   last7Days: [
     { dateIso: daysAgo(6), earnedMinorUnits: 12_000 },
     { dateIso: daysAgo(5), earnedMinorUnits: 0 },

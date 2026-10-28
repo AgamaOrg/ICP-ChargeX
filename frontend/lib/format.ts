@@ -11,6 +11,7 @@ const kilometers = new Intl.NumberFormat(LOCALE, {
   unit: "kilometer",
   maximumFractionDigits: 1,
 });
+const kilowattHours = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 1 });
 const dateTime = new Intl.DateTimeFormat(LOCALE, {
   dateStyle: "medium",
   timeStyle: "short",
@@ -29,6 +30,9 @@ export const formatPercent = (value: number) => percent.format(clampPercent(valu
 export const formatNumber = (value: number) => decimal.format(value);
 
 export const formatDistance = (km: number) => kilometers.format(km);
+
+/** "2.4 kWh". */
+export const formatEnergy = (kwh: number) => `${kilowattHours.format(kwh)} kWh`;
 
 export const formatDateTime = (iso: string) => dateTime.format(new Date(iso));
 

@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
+import { ChevronRightIcon } from "@/components/ui/icons";
 import { LoadingRegion, Skeleton } from "@/components/ui/skeleton";
 import { formatMoney, formatNumber, formatWeekday } from "@/lib/format";
 import { useSimulatedLoad } from "@/lib/mock/use-simulated-load";
@@ -87,10 +89,13 @@ function TradingDetails({ summary }: { summary: TradingSummaryData }) {
         </table>
       </figure>
 
-      <div className="flex min-h-11 items-center justify-between rounded-md bg-surface-muted px-3 text-sm text-ink-muted">
+      <Link
+        href="/trading?tab=portfolio"
+        className="flex min-h-11 items-center justify-between rounded-md bg-surface-muted px-3 text-sm font-medium text-ink hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+      >
         <span>View trading history</span>
-        <span className="text-xs">Coming soon</span>
-      </div>
+        <ChevronRightIcon className="size-4 text-ink-muted" />
+      </Link>
     </div>
   );
 }

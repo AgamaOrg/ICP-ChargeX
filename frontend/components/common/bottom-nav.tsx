@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BatteryIcon, HomeIcon, LeasesIcon } from "@/components/ui/icons";
+import { BatteryIcon, HomeIcon, LeasesIcon, TradeIcon } from "@/components/ui/icons";
 
 const ITEMS = [
   { href: "/", label: "Home", icon: HomeIcon },
   { href: "/batteries", label: "Batteries", icon: BatteryIcon },
   { href: "/leases", label: "Leases", icon: LeasesIcon },
+  { href: "/trading", label: "Trade", icon: TradeIcon },
 ] as const;
 
 export function BottomNav() {

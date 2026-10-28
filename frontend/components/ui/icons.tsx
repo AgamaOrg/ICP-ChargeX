@@ -41,6 +41,12 @@ export const LeasesIcon = (p: IconProps) => (
   </Svg>
 );
 
+export const TradeIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 7h13m0 0-3-3m3 3-3 3M20 17H7m0 0 3-3m-3 3 3 3" />
+  </Svg>
+);
+
 export const BellIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="M6 9a6 6 0 1 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9M10 20a2 2 0 0 0 4 0" />
