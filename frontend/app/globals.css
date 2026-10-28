@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — see docs/design.md §4.
+ * PLACEHOLDER VALUES: the brand palette is not chosen yet. Primary and
+ * neutrals are grayscale stand-ins; status colors use conventional hues so
+ * errors and warnings stay readable. Replace values here only — components
+ * use the token names, never raw colors.
+ */
+:root {
+  --canvas: #f4f4f5;
+  --surface: #ffffff;
+  --surface-muted: #e4e4e7;
+  --line: #d4d4d8;
+  --ink: #18181b;
+  --ink-muted: #52525b;
+
+  --primary: #27272a;
+  --primary-foreground: #ffffff;
+  --primary-soft: #e4e4e7;
+
+  --success: #15803d;
+  --success-soft: #dcfce7;
+  --warning: #a16207;
+  --warning-soft: #fef9c3;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
+  --info: #1d4ed8;
+  --info-soft: #dbeafe;
+
+  --focus: #2563eb;
+  --overlay: rgb(24 24 27 / 0.5);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-focus: var(--focus);
+  --color-overlay: var(--overlay);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-card: 0 1px 2px rgb(24 24 27 / 0.06), 0 1px 3px rgb(24 24 27 / 0.08);
+  --shadow-sheet: 0 -4px 24px rgb(24 24 27 / 0.12);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
