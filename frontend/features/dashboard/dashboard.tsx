@@ -1,18 +1,18 @@
 import { Suspense } from "react";
-import { Logo } from "@/components/common/logo";
-import { PageHeader } from "@/components/common/page-header";
+import { BrandHeader, LogoutLink } from "@/components/common/brand-header";
 import { ActiveLeasesList, ActiveLeasesSkeleton } from "./components/active-leases-list";
 import { BatteryStatusCard, BatteryStatusSkeleton } from "./components/battery-status-card";
 import { NotificationBellPlaceholder, NotificationCenter } from "./components/notification-center";
 import { QuickActions } from "./components/quick-actions";
-import { TradingSummary, TradingSummarySkeleton } from "./components/trading-summary";
+// TRADING PAUSED (2026-10-29): restore with the trading card below.
+// import { TradingSummary, TradingSummarySkeleton } from "./components/trading-summary";
 import {
   mockDashboardBattery,
   mockDashboardLeases,
   mockIncomingNotification,
   mockNotifications,
   mockQuickActionsContext,
-  mockTradingSummary,
+  // mockTradingSummary, // TRADING PAUSED (2026-10-29)
   mockUserName,
 } from "./data/mock";
 
@@ -23,26 +23,35 @@ import {
 export default function Dashboard() {
   return (
     <>
-      <PageHeader
-        title={`Good morning, ${mockUserName}`}
-        leading={<Logo variant="tile" size="sm" />}
+      <BrandHeader
+        eyebrow="Good morning,"
+        title={mockUserName}
+        tall
         actions={
-          <Suspense fallback={<NotificationBellPlaceholder />}>
-            <NotificationCenter initial={mockNotifications} incoming={mockIncomingNotification} />
-          </Suspense>
+          <>
+            <Suspense fallback={<NotificationBellPlaceholder />}>
+              <NotificationCenter initial={mockNotifications} incoming={mockIncomingNotification} />
+            </Suspense>
+            <LogoutLink />
+          </>
         }
       />
-      <div className="flex flex-col gap-4 px-4 pb-6">
-        <Suspense fallback={<BatteryStatusSkeleton />}>
-          <BatteryStatusCard battery={mockDashboardBattery} />
-        </Suspense>
+      <div className="flex flex-col gap-4 px-4 pt-4 pb-6">
+        {/* The battery card overlaps the teal band, like a wallet balance card. */}
+        <div className="-mt-12">
+          <Suspense fallback={<BatteryStatusSkeleton />}>
+            <BatteryStatusCard battery={mockDashboardBattery} />
+          </Suspense>
+        </div>
         <QuickActions {...mockQuickActionsContext} />
         <Suspense fallback={<ActiveLeasesSkeleton />}>
           <ActiveLeasesList leases={mockDashboardLeases} />
         </Suspense>
+        {/* TRADING PAUSED (2026-10-29): hidden at the product owner's request, not deleted.
         <Suspense fallback={<TradingSummarySkeleton />}>
           <TradingSummary summary={mockTradingSummary} />
         </Suspense>
+        */}
       </div>
     </>
   );

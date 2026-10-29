@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/common/logo";
-import { mockDemoAccount } from "./data/mock";
+import { mockDemoAccounts } from "./data/mock";
 import { LoginForm } from "./components/login-form";
 import { SignupForm } from "./components/signup-form";
 import type { AuthMode } from "./types";
@@ -22,7 +22,7 @@ const COPY: Record<AuthMode, { title: string; subtitle: string; prompt: string; 
     subtitle: "It takes less than a minute.",
     prompt: "Already have an account?",
     link: "Log in",
-    href: "/login",
+    href: "/",
   },
 };
 
@@ -41,7 +41,7 @@ export default function Auth({ mode }: AuthProps) {
         </header>
 
         <section aria-label={copy.title} className="rounded-lg bg-surface p-4 shadow-card sm:p-6">
-          {mode === "login" ? <LoginForm demoAccount={mockDemoAccount} /> : <SignupForm />}
+          {mode === "login" ? <LoginForm demoAccounts={mockDemoAccounts} /> : <SignupForm />}
         </section>
 
         <p className="text-center text-sm text-ink-muted">

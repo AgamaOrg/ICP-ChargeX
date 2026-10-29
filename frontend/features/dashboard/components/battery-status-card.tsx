@@ -11,7 +11,7 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { formatDuration, formatPercent, formatRelative } from "@/lib/format";
 import { useMockNow } from "@/lib/mock/use-mock-now";
 import { useSimulatedLoad } from "@/lib/mock/use-simulated-load";
-import { BATTERY_STATUS_PILL } from "@/lib/status";
+import { BATTERY_STATUS_PILL, batteryCondition } from "@/lib/status";
 import type { Battery } from "@/lib/types/battery";
 import { useBatteryStatus } from "../hooks/use-battery-status";
 
@@ -60,7 +60,7 @@ function CardHeading() {
   return (
     <div className="mb-3">
       <h2 id="battery-status-title" className="text-base font-semibold text-ink">
-        Battery status
+        My battery
       </h2>
     </div>
   );
@@ -79,16 +79,16 @@ function LiveBatteryStatus({ initial }: { initial: Battery }) {
           <StatusPill tone={pill.tone} label={pill.label} />
         </div>
       </div>
-      <p className="text-3xl font-semibold tabular-nums text-ink">
-        {formatPercent(battery.chargePercent)}
-        <span className="ml-2 text-sm font-normal text-ink-muted">charge</span>
+      <p className="flex items-baseline gap-2">
+        <span className="text-5xl font-semibold tabular-nums text-ink">{formatPercent(battery.chargePercent)}</span>
+        <span className="text-lg text-ink-muted">charged</span>
       </p>
       <BatteryMeter label="Charge" value={battery.chargePercent} />
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
-        <span className="text-ink">{estimate(battery)}</span>
-        <span className="text-ink-muted">Health {formatPercent(battery.healthPercent)}</span>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 rounded-lg bg-surface-muted px-3 py-2 text-base">
+        <span className="font-medium text-ink">{estimate(battery)}</span>
+        <span className="text-ink-muted">Condition: {batteryCondition(battery.healthPercent)}</span>
       </div>
-      <p className="text-xs text-ink-muted">
+      <p className="text-sm text-ink-muted">
         Updated {formatRelative(new Date(updatedAtMs).toISOString(), now)}
       </p>
     </div>

@@ -47,7 +47,8 @@ Mobile-first, single column. The desktop layout is the same column, centered —
 
 ```
 ┌─────────────────────────────┐
-│ [▣] Good morning, Alex 🔔 3 │  sticky header, 56px, brand tile
+│ [▣] Good morning,  🔔 Log out│  teal band (home: tall, card overlaps)
+│     Alex                    │
 ├─────────────────────────────┤
 │                             │
 │   ┌─────────────────────┐   │
@@ -66,7 +67,7 @@ Mobile-first, single column. The desktop layout is the same column, centered —
 │   └─────────────────────┘   │
 │                             │
 ├─────────────────────────────┤
-│ Home Batteries Leases Trade │  bottom nav, 64px + safe area
+│ Home  ( ⚡ Find )  My leases │  bottom nav, raised centre action
 └─────────────────────────────┘
 ```
 
@@ -74,7 +75,8 @@ Rules:
 
 - Content width `max-w-md` (~448px) centered on larger screens; page background stays visible outside it.
 - Header: 56px, title or greeting on the left, at most two icon actions on the right. The home screen puts the small brand tile (§4.5) before the greeting; inner screens show a back link instead.
-- Bottom nav: 3–5 items, icon + label, active item uses the accent color plus a filled icon. Never hide primary navigation behind a hamburger on mobile.
+- Bottom nav: 3–5 items, icon + label, active item uses the accent color plus a filled icon. Never hide primary navigation behind a hamburger on mobile. Wallet-style: the main action is a raised round button in the centre (rider: **Find battery**; admin: **Rent out**). The rider nav has three items on purpose.
+- Headers: the home screen uses the tall teal band (`components/common/brand-header.tsx`) with the summary card overlapping it; inner screens use the short band (`components/common/page-header.tsx`). Log out sits in the home header.
 - Safe-area padding at the bottom (`pb-[env(safe-area-inset-bottom)]`).
 - No nested scroll containers. The page scrolls; sheets scroll internally.
 - Sheets/modals: slide up from the bottom on mobile, centered dialog on desktop.
@@ -286,6 +288,8 @@ Component rules:
 
 ### 8.1 Main dashboard
 
+Current build (2026-10-30): teal band with "Good morning, Alex", bell, and Log out; **My battery** card overlapping the band (big charge %, meter, time to full, condition); round-icon shortcuts Map · Return · Pay · Track; Active leases with See all. The sketch below is the original plan.
+
 ```
 Header: greeting + notification bell (unread count)
 ┌───────────────────────────────┐
@@ -389,6 +393,29 @@ line "This is a demo. No money will be taken."
 
 ---
 
+### 8.8 Rental admin (wallet-style)
+
+```
+┌───────────────────────────────┐
+│ [■] Good morning,     Log out │  deep teal band (solid, no gradient)
+│     Rental admin              │
+│  ┌─────────────────────────┐  │
+│  │ Batteries out now       │  │  white summary card overlapping
+│  │ 7                       │  │  the band, like a balance card
+│  │ ┌─────┬─────────┬─────┐ │  │
+│  │ │2 Late│1 Due soon│4 Ready│ │
+│  └─────────────────────────┘  │
+├───────────────────────────────┤
+│ (Rentals)(Returned)(Batteries)(Map)  round icon shortcuts
+│ Needs attention        See all│  late + due soon, max 3
+│ Ready by branch        See all│  3-up grid, 0 ready in amber
+├───────────────────────────────┤
+│ Home Rentals ( ⚡ ) Batteries Map │  raised centre: Rent out
+└───────────────────────────────┘
+```
+
+Borrowed from wallet apps: the coloured header band, the overlapping summary card, round shortcuts, and a raised centre action. Not borrowed: GCash's blue, logo, icons, or copy. The raised **Rent out** button is the single primary action; success messages show as a dark toast above the nav and hide after 5 seconds. Inner tabs (Rentals, Batteries, Map) use a shorter band with the tab name as the title.
+
 ## 9. Content style
 
 - Sentence case, second person, no exclamation marks.
@@ -398,7 +425,7 @@ line "This is a demo. No money will be taken."
 - Currency: `Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" })` → `₱1,250.00`.
 - Dates: absolute in details ("Oct 28, 2026, 3:40 PM"), relative in lists ("in 2 days").
 - Percent: whole numbers for charge and health (`78%`), one decimal only if precision matters.
-- Label mock/simulated data plainly: "Demo data", "No real payment is processed." Exception: the dashboard (`/`) shows no on-screen demo labels, by the product owner's decision (2026-10-29). Its mock data is labelled in code comments, and it must never show a payment, lease action, or transfer as completed.
+- Label mock/simulated data plainly: "Demo data", "No real payment is processed." Exception: the dashboard (`/dashboard`) shows no on-screen demo labels, by the product owner's decision (2026-10-29). Its mock data is labelled in code comments, and it must never show a payment, lease action, or transfer as completed.
 
 ---
 

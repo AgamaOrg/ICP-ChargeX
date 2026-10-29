@@ -38,7 +38,7 @@ Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 | Epic | Feature folder | Root file | Routes |
 | --- | --- | --- | --- |
-| Dashboard | `features/dashboard/` | `dashboard.tsx` | `/`, `/notifications` |
+| Dashboard | `features/dashboard/` | `dashboard.tsx` | `/dashboard` (login is `/`) |
 | Battery leasing | `features/battery-leasing/` | `battery-leasing.tsx` | `/batteries`, `/batteries/[batteryId]`, `/batteries/lease`, `/leases` |
 | Energy trading + tracking | `features/trading/` | `trading.tsx` | `/trading` (`?tab=market\|tracking\|portfolio`, `?sort=`, `?offer=`, `&sheet=new-offer`) |
 
@@ -348,7 +348,27 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 
 ---
 
+# Epic 4 — Rental admin
+
+Feature: `features/admin/`
+Root: `admin.tsx`
+Route: `/admin` (the admin demo login lands here)
+
+## 4.1 Rental admin dashboard `[~]`
+
+**Files:** `features/admin/components/{admin-workspace,admin-header,admin-home,admin-nav,rental-list,rental-sheet,rent-form-sheet,available-batteries,branch-card,branch-map}.tsx`, `features/admin/{status,validation}.ts`
+
+**UI (phone-width, wallet-style layout — see `design.md` §8.8):** bottom nav Home · Rentals · raised **Rent out** · Batteries · Map; **Rent out a battery** form (rider name, PH mobile number, ready battery, 1 hour / 1 day / 1 week, cost); "Who has a battery" with Out now / Returned, late first; a rental sheet with phone, battery, kiosk, times, cost, **Mark as returned** and **Call**; "Available batteries" by branch as a list (each ready battery has **Rent out**, which pre-fills the form) or a mapcn map with one pin per branch showing its ready count (0 ready highlighted).
+
+**States:** loading skeleton, empty per list, error + retry (`?demo=`), ready, returned notice.
+
+**Done when:** late is shown in text and colour; renting out and marking returned update the tiles, list, and branch counts together; form errors are announced and focus the first invalid field; the map is never the only way to see a branch; keyboard + 360px checks pass.
+
+---
+
 # Epic 3 — Energy Trading + Battery Tracking
+
+> **Paused 2026-10-29.** Hidden at the product owner's request: `/trading` returns 404, and the Trade nav item and dashboard trading card are commented out (search `TRADING PAUSED`). The code in `features/trading/` is kept as is. Items 3.1–3.6 stay `[~]` until the screen is restored.
 
 Feature: `features/trading/`
 Root: `trading.tsx`

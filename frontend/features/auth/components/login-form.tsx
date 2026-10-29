@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/ui/text-field";
+import { LANDING_BY_ROLE } from "../landing";
 import { useLoginRequest } from "../hooks/use-auth-request";
 import type { DemoAccount, FieldErrors, LoginInput } from "../types";
 import { firstInvalidField, validateLogin } from "../validation";
@@ -11,12 +12,12 @@ import { DemoCredentials } from "./demo-credentials";
 import { FormError } from "./form-error";
 
 type LoginFormProps = {
-  demoAccount: DemoAccount;
+  demoAccounts: DemoAccount[];
 };
 
 const EMPTY: LoginInput = { email: "", password: "" };
 
-export function LoginForm({ demoAccount }: LoginFormProps) {
+export function LoginForm({ demoAccounts }: LoginFormProps) {
   const [values, setValues] = useState<LoginInput>(EMPTY);
   const [errors, setErrors] = useState<FieldErrors<LoginInput>>({});
   const { state, submit } = useLoginRequest();
@@ -47,11 +48,11 @@ export function LoginForm({ demoAccount }: LoginFormProps) {
       return;
     }
     const result = await submit(values);
-    if (result?.ok) router.push("/");
+    if (result?.ok) router.push(LANDING_BY_ROLE[result.role]);
   }
 
-  function fillDemo() {
-    setValues({ email: demoAccount.email, password: demoAccount.password });
+  function fillDemo(account: DemoAccount) {
+    setValues({ email: account.email, password: account.password });
     setErrors({});
   }
 
@@ -61,7 +62,7 @@ export function LoginForm({ demoAccount }: LoginFormProps) {
 
   return (
     <form ref={formRef} noValidate onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <DemoCredentials account={demoAccount} onUse={fillDemo} />
+      <DemoCredentials accounts={demoAccounts} onUse={fillDemo} />
       {state.status === "error" && <FormError message={state.message} />}
       <TextField
         label="Email"

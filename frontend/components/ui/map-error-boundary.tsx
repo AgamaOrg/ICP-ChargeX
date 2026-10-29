@@ -9,7 +9,7 @@ type MapErrorBoundaryProps = {
 
 /**
  * The map component throws during render when MapLibre cannot start (no
- * WebGL, blocked script). Catch it here so the finder falls back to the list.
+ * WebGL, blocked script). Catch it here so the screen can fall back to a list.
  */
 export class MapErrorBoundary extends Component<MapErrorBoundaryProps, { failed: boolean }> {
   state = { failed: false };

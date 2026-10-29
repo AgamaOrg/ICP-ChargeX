@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Map, MapMarker, MarkerContent, useMap } from "@/components/ui/map";
 import type { Battery } from "@/lib/types/battery";
-import { MAP_STYLE_IDS, MAP_STYLES, type MapStyleId } from "../data/map-styles";
+import { MAP_STYLE_IDS, MAP_STYLES, type MapStyleId } from "@/lib/map-styles";
 import { BatteryPin } from "./battery-pin";
-import { MapErrorBoundary } from "./map-error-boundary";
+import { MapErrorBoundary } from "@/components/ui/map-error-boundary";
 
 type BatteryMapProps = {
   batteries: Battery[];

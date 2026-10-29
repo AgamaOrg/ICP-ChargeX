@@ -54,7 +54,7 @@ export function SignupForm() {
           It only exists in this browser tab. Reloading the page clears it.
         </p>
         <Link
-          href="/login"
+          href="/"
           className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
         >
           Log in

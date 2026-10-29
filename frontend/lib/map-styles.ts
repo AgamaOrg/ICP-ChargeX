@@ -30,8 +30,9 @@ const satelliteStyle: StyleSpecification = {
 };
 
 /**
- * Basemaps for the battery map. All three are free and need no API key:
- * CARTO vector styles (OpenStreetMap data) and Esri World Imagery.
+ * Basemaps shared by the rider battery map and the admin branch map. All
+ * three are free and need no API key: CARTO vector styles (OpenStreetMap
+ * data) and Esri World Imagery.
  */
 export const MAP_STYLES: Record<MapStyleId, { label: string; style: string | StyleSpecification }> = {
   color: { label: "Color", style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json" },
