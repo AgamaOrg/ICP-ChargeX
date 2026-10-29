@@ -1,10 +1,6 @@
-import type { Metadata } from "next";
-import Auth from "@/features/auth/auth";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Log in",
-};
-
+// Login now lives at "/". Kept so old links and bookmarks still work.
 export default function LoginPage() {
-  return <Auth mode="login" />;
+  redirect("/");
 }

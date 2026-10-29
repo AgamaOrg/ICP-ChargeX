@@ -44,7 +44,7 @@ export function PaymentResult({ receipt, batteryLabel, kioskName, durationLabel 
         See my lease
       </Link>
       <Link
-        href="/"
+        href="/dashboard"
         className="inline-flex h-12 items-center justify-center rounded-md text-base font-semibold text-ink hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
       >
         Back to home

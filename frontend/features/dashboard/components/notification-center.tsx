@@ -56,13 +56,13 @@ export function NotificationCenter({ initial, incoming }: NotificationCenterProp
         type="button"
         onClick={() => setOpen(true)}
         aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}
-        className="relative inline-flex size-11 items-center justify-center rounded-md text-ink hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+        className="relative inline-flex size-11 items-center justify-center rounded-md text-primary-foreground hover:bg-primary-foreground/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-foreground"
       >
         <BellIcon className="size-6" />
         {unread > 0 && (
           <span
             aria-hidden="true"
-            className="absolute top-1 right-1 flex min-w-5 items-center justify-center rounded-full bg-danger px-1 text-[0.7rem] font-semibold text-primary-foreground"
+            className="absolute top-0.5 right-0.5 flex min-w-5 items-center justify-center rounded-full bg-danger px-1 text-xs font-semibold text-primary-foreground ring-2 ring-primary"
           >
             {unread}
           </span>
@@ -130,5 +130,6 @@ export function NotificationCenter({ initial, incoming }: NotificationCenterProp
 }
 
 export function NotificationBellPlaceholder() {
-  return <Skeleton className="size-11" />;
+  // Sits on the teal header band, so a light placeholder instead of the grey skeleton.
+  return <span aria-hidden="true" className="block size-11 rounded-md bg-primary-foreground/10" />;
 }

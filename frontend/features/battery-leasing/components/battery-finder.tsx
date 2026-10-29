@@ -13,7 +13,7 @@ import type { Battery } from "@/lib/types/battery";
 import type { FinderView, LocationPermission } from "../types";
 import { BatteryDetailsSheet } from "./battery-details-sheet";
 import { BatteryList } from "./battery-list";
-import { isMapStyleId } from "../data/map-styles";
+import { isMapStyleId } from "@/lib/map-styles";
 import { BatteryMap } from "./battery-map";
 import { LocationStatus } from "./location-status";
 import { SelectedBatteryCard } from "./selected-battery-card";

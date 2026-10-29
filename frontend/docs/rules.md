@@ -151,6 +151,8 @@ No spinner-only screens. No "undefined", "NaN", or raw ISO dates in the UI.
 
 Comment **why**, not **what**. Delete commented-out code. No TODO without an owner and a roadmap link.
 
+Exception: code the product owner asked to pause rather than delete stays commented out behind a searchable marker with a date, e.g. `TRADING PAUSED (2026-10-29)`. See `architecture.md` §13.
+
 ---
 
 ## 5. Stop and ask when
