@@ -8,11 +8,9 @@ import { BatteryIcon } from "@/components/ui/icons";
 import { StatusPill, type StatusTone } from "@/components/ui/status-pill";
 import { formatDateTime, formatDistance, formatPercent, formatRelative } from "@/lib/format";
 import { useMockNow } from "@/lib/mock/use-mock-now";
-import { BATTERY_STATUS_PILL } from "@/lib/status";
+import { BATTERY_STATUS_PILL, batteryCondition } from "@/lib/status";
 import { useBatteryTracking } from "../hooks/use-battery-tracking";
 import type { BatteryTracking, MaintenanceSeverity } from "../types";
-import { TrackingMap } from "./tracking-map";
-import { UsageChart } from "./usage-chart";
 
 type BatteryTrackingPanelProps = {
   tracking: BatteryTracking | null;
@@ -27,9 +25,9 @@ const ALERT_TONE: Record<MaintenanceSeverity, StatusTone> = {
 };
 
 const ALERT_LABEL: Record<MaintenanceSeverity, string> = {
-  info: "Info",
+  info: "OK",
   success: "Passed",
-  warning: "Action needed",
+  warning: "Do this soon",
   danger: "Urgent",
 };
 
@@ -39,12 +37,12 @@ export function BatteryTrackingPanel({ tracking, empty }: BatteryTrackingPanelPr
       <Card>
         <EmptyState
           icon={<BatteryIcon className="size-8" />}
-          title="No battery to track"
-          description="Lease a battery and its live location, health, and usage will show up here."
+          title="No battery yet"
+          description="Lease a battery and you can check it here."
           action={
             <Link
               href="/batteries"
-              className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+              className="inline-flex h-14 items-center rounded-md bg-primary px-4 text-base font-semibold text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
             >
               Find a battery
             </Link>
@@ -57,6 +55,9 @@ export function BatteryTrackingPanel({ tracking, empty }: BatteryTrackingPanelPr
   return <LiveTracking initial={tracking} />;
 }
 
+// Values update on a demo timer (hooks/use-battery-tracking.ts). The GPS
+// preview, coordinates and usage chart were removed to keep this to what a
+// rider checks: charge, how far it goes, where it is, and anything to fix.
 function LiveTracking({ initial }: { initial: BatteryTracking }) {
   const { tracking, updatedAtMs } = useBatteryTracking(initial);
   const now = useMockNow(10_000);
@@ -64,105 +65,61 @@ function LiveTracking({ initial }: { initial: BatteryTracking }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <Card>
-        <div className="mb-3 flex items-baseline justify-between gap-2">
-          <h2 className="text-base font-semibold text-ink">Battery tracking</h2>
-          <span className="text-xs text-ink-muted">Simulated live data</span>
-        </div>
-
+      <Card className="flex flex-col gap-4">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-sm text-ink-muted">{tracking.batteryLabel}</p>
+          <h2 className="text-lg font-semibold text-ink">{tracking.batteryLabel}</h2>
           <div aria-live="polite">
             <StatusPill tone={pill.tone} label={pill.label} />
           </div>
         </div>
 
-        <p className="mt-2 text-3xl font-semibold tabular-nums text-ink">
-          {formatPercent(tracking.chargePercent)}
-          <span className="ml-2 text-sm font-normal text-ink-muted">charge</span>
-        </p>
-        <BatteryMeter label="Charge" value={tracking.chargePercent} />
-
-        <div className="mt-4 flex flex-col gap-2">
-          <div className="flex items-baseline justify-between gap-2 text-sm">
-            <span className="text-ink">Health</span>
-            <span className="tabular-nums text-ink-muted">{formatPercent(tracking.healthPercent)}</span>
-          </div>
-          <BatteryMeter label="Health" value={tracking.healthPercent} size="sm" />
+        <div className="flex flex-col gap-2">
+          <p className="flex items-baseline gap-2">
+            <span className="text-4xl font-semibold tabular-nums text-ink">{formatPercent(tracking.chargePercent)}</span>
+            <span className="text-lg text-ink-muted">charged</span>
+          </p>
+          <BatteryMeter label="Charge" value={tracking.chargePercent} />
         </div>
 
-        <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
-          <div>
-            <dt className="text-ink-muted">Estimated range</dt>
-            <dd className="tabular-nums text-ink">{formatDistance(tracking.estimatedRangeKm)}</dd>
-          </div>
-          <div>
-            <dt className="text-ink-muted">Distance</dt>
-            <dd className="tabular-nums text-ink">{formatDistance(tracking.distanceKm)}</dd>
-          </div>
-          <div>
-            <dt className="text-ink-muted">Kiosk</dt>
-            <dd className="text-ink">{tracking.kioskName}</dd>
-          </div>
-          <div>
-            <dt className="text-ink-muted">Updated</dt>
-            <dd className="text-ink">{formatRelative(new Date(updatedAtMs).toISOString(), now)}</dd>
-          </div>
+        <dl className="flex flex-col divide-y divide-line rounded-lg border border-line text-base">
+          <Fact label="You can drive about" value={formatDistance(tracking.estimatedRangeKm)} />
+          <Fact label="Where" value={`${tracking.kioskName}, ${formatDistance(tracking.distanceKm)} away`} />
+          <Fact label="Battery condition" value={batteryCondition(tracking.healthPercent)} />
         </dl>
 
-        <div className="mt-4">
-          <TrackingMap
-            lat={tracking.lat}
-            lng={tracking.lng}
-            locationLabel={tracking.locationLabel}
-            distanceKm={tracking.distanceKm}
-          />
-        </div>
-
-        <Link
-          href={`/batteries?battery=${tracking.batteryId}&sheet=details`}
-          className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-md border border-line bg-surface px-4 text-sm font-medium text-ink hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-        >
-          View battery details
-        </Link>
+        <p className="text-sm text-ink-muted">Updated {formatRelative(new Date(updatedAtMs).toISOString(), now)}</p>
       </Card>
 
-      <Card>
-        <div className="mb-3 flex items-baseline justify-between gap-2">
-          <h2 className="text-base font-semibold text-ink">Usage</h2>
-          <span className="text-xs text-ink-muted">Demo data</span>
-        </div>
-        <UsageChart days={tracking.usageLast7Days} />
-      </Card>
-
-      <Card aria-labelledby="maintenance-title">
-        <div className="mb-3 flex items-baseline justify-between gap-2">
-          <h2 id="maintenance-title" className="text-base font-semibold text-ink">
-            Maintenance
-          </h2>
-          <span className="text-xs text-ink-muted">Demo data</span>
-        </div>
+      <Card aria-labelledby="care-title">
+        <h2 id="care-title" className="mb-3 text-lg font-semibold text-ink">
+          Battery care
+        </h2>
         {tracking.alerts.length === 0 ? (
-          <EmptyState title="No maintenance alerts" description="This battery is reporting normally." />
+          <EmptyState title="Nothing to do" description="Your battery is working normally." />
         ) : (
           <ul className="flex flex-col gap-3">
             {tracking.alerts.map((alert) => (
-              <li key={alert.id} className="rounded-md bg-surface-muted p-3">
+              <li key={alert.id} className="flex flex-col gap-1 rounded-md bg-surface-muted p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-sm font-medium text-ink">{alert.title}</p>
+                  <p className="text-base font-semibold text-ink">{alert.title}</p>
                   <StatusPill tone={ALERT_TONE[alert.severity]} label={ALERT_LABEL[alert.severity]} />
                 </div>
-                <p className="mt-1 text-sm text-ink-muted">{alert.body}</p>
-                {alert.dueAt && <p className="mt-1 text-xs text-ink-muted">Due {formatDateTime(alert.dueAt)}</p>}
+                <p className="text-base text-ink-muted">{alert.body}</p>
+                {alert.dueAt && <p className="text-sm text-ink-muted">By {formatDateTime(alert.dueAt)}</p>}
               </li>
             ))}
           </ul>
         )}
       </Card>
+    </div>
+  );
+}
 
-      <p className="text-center text-xs text-ink-muted">
-        Demo data. Location and telemetry are simulated and reset when you reload the page.
-      </p>
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 px-4 py-3">
+      <dt className="shrink-0 text-ink-muted">{label}</dt>
+      <dd className="text-right font-semibold text-ink">{value}</dd>
     </div>
   );
 }

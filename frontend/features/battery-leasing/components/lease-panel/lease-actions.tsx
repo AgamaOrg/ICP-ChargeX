@@ -24,9 +24,9 @@ const ALLOWED: Record<Lease["status"], LeaseAction[]> = {
 };
 
 const LABELS: Record<LeaseAction, string> = {
-  extend: "Extend lease",
+  extend: "Add more time",
   return: "Return battery",
-  report: "Report an issue",
+  report: "Report a problem",
 };
 
 export function LeaseActions({ lease, nowMs, extendOptions, issueTypes }: LeaseActionsProps) {
@@ -58,11 +58,11 @@ export function LeaseActions({ lease, nowMs, extendOptions, issueTypes }: LeaseA
         Lease actions
       </h3>
       {allowed.map((action, index) => (
-        <Button key={action} variant={index === 0 ? "primary" : "secondary"} className={index === 0 ? "" : "h-12"} onClick={() => setOpen(action)}>
+        <Button key={action} variant={index === 0 ? "primary" : "secondary"} onClick={() => setOpen(action)}>
           {LABELS[action]}
         </Button>
       ))}
-      <p aria-live="polite" className="min-h-5 text-sm text-success">
+      <p aria-live="polite" className="min-h-6 text-base font-medium text-success">
         {state.status === "done" && (
           <>
             <span aria-hidden="true">✓ </span>
@@ -79,20 +79,20 @@ export function LeaseActions({ lease, nowMs, extendOptions, issueTypes }: LeaseA
           <>
             <Button variant={open === "return" ? "danger" : "primary"} loading={working} onClick={confirm}>
               {open === "extend" && extend
-                ? `Extend for ${formatMoney(extend.hours * lease.pricePerHourMinorUnits)}`
+                ? `Pay ${formatMoney(extend.hours * lease.pricePerHourMinorUnits)}`
                 : open === "return"
-                  ? "End lease now"
+                  ? "Yes, return it"
                   : "Send report"}
             </Button>
             <Button variant="secondary" disabled={working} onClick={close}>
-              Keep lease as is
+              Go back
             </Button>
           </>
         }
       >
         <div className="flex flex-col gap-4">
           {sheetError && (
-            <p role="alert" className="flex gap-2 rounded-md bg-danger-soft p-3 text-sm text-danger">
+            <p role="alert" className="flex gap-2 rounded-md bg-danger-soft p-3 text-base text-danger">
               <span aria-hidden="true">⚠</span>
               {sheetError}
             </p>
@@ -101,36 +101,37 @@ export function LeaseActions({ lease, nowMs, extendOptions, issueTypes }: LeaseA
           {open === "extend" && (
             <fieldset className="flex flex-col gap-2">
               <legend className="mb-2 text-base text-ink">
-                Your lease ends {formatDateTime(lease.endsAt)}. How much more time do you need?
+                <span className="block text-lg font-semibold">How much more time?</span>
+                <span className="text-ink-muted">Now due {formatDateTime(lease.endsAt)}</span>
               </legend>
               {extendOptions.map((option) => (
                 <label
                   key={option.id}
-                  className={`flex min-h-14 cursor-pointer items-center gap-3 rounded-md border px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus ${option.id === extendId ? "border-primary bg-primary-soft" : "border-line"}`}
+                  className={`flex min-h-16 cursor-pointer items-center gap-4 rounded-lg border-2 px-4 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus ${option.id === extendId ? "border-primary bg-primary-soft" : "border-line"}`}
                 >
                   <input
                     type="radio"
                     name="extend"
                     checked={option.id === extendId}
                     onChange={() => setExtendId(option.id)}
-                    className="size-5 accent-primary"
+                    className="size-6 accent-primary"
                   />
-                  <span className="flex-1 text-ink">{option.label}</span>
-                  <span className="tabular-nums text-sm text-ink-muted">
+                  <span className="flex-1 text-lg font-medium text-ink">{option.label}</span>
+                  <span className="text-lg font-semibold tabular-nums text-ink">
                     {formatMoney(option.hours * lease.pricePerHourMinorUnits)}
                   </span>
                 </label>
               ))}
-              <p className="text-xs text-ink-muted">Demo only — no real payment is processed.</p>
+              {/* Required by rules.md §4: never imply a real payment. */}
+              <p className="text-sm text-ink-muted">This is a demo. No money will be taken.</p>
             </fieldset>
           )}
 
           {open === "return" && (
             <div className="flex flex-col gap-2 text-base text-ink">
-              <p>This ends your lease for {lease.batteryLabel} right now.</p>
-              <p className="text-sm text-ink-muted">
-                Bring the battery to any ChargeX kiosk within 30 minutes. After that, extra time is charged at{" "}
-                {formatMoney(lease.pricePerHourMinorUnits)} per hour. You can&apos;t undo this.
+              <p>Bring {lease.batteryLabel} to any kiosk within 30 minutes.</p>
+              <p className="text-ink-muted">
+                After that, it costs {formatMoney(lease.pricePerHourMinorUnits)} per hour. You can&apos;t undo this.
               </p>
             </div>
           )}
@@ -142,22 +143,22 @@ export function LeaseActions({ lease, nowMs, extendOptions, issueTypes }: LeaseA
                 {issueTypes.map((type) => (
                   <label
                     key={type}
-                    className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-1 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus"
+                    className="flex min-h-12 cursor-pointer items-center gap-3 rounded-md px-1 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus"
                   >
                     <input
                       type="radio"
                       name="issue"
                       checked={type === issueType}
                       onChange={() => setIssueType(type)}
-                      className="size-5 accent-primary"
+                      className="size-6 accent-primary"
                     />
-                    <span className="text-ink">{type}</span>
+                    <span className="text-lg text-ink">{type}</span>
                   </label>
                 ))}
               </fieldset>
               <div className="flex flex-col gap-1">
-                <label htmlFor="issue-details" className="text-sm font-medium text-ink">
-                  Details (optional)
+                <label htmlFor="issue-details" className="text-base font-medium text-ink">
+                  Tell us more (you can skip this)
                 </label>
                 <textarea
                   id="issue-details"
@@ -167,7 +168,8 @@ export function LeaseActions({ lease, nowMs, extendOptions, issueTypes }: LeaseA
                   className="rounded-sm border border-line bg-surface p-3 text-base text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
                 />
               </div>
-              <p className="text-xs text-ink-muted">Demo only — reports aren&apos;t sent anywhere yet.</p>
+              {/* Kept: without it the rider would expect someone to follow up. */}
+              <p className="text-sm text-ink-muted">This is a demo. Reports are not sent yet.</p>
             </>
           )}
         </div>

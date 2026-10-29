@@ -9,7 +9,7 @@ type BatteryMeterProps = {
 
 export function BatteryMeter({ label, value, size = "md" }: BatteryMeterProps) {
   const percent = clampPercent(value);
-  const fill = percent <= 20 ? "bg-warning" : "bg-primary";
+  const fill = percent <= 20 ? "bg-warning" : "bg-linear-to-r from-primary to-brand-green";
   return (
     <div
       role="meter"

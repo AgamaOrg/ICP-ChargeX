@@ -20,18 +20,18 @@ type LeasePanelProps = {
   issueTypes: readonly string[];
 };
 
+// Two tabs instead of three: overdue leases sit at the top of "Now", where a
+// rider will see them, rather than behind a separate tab.
 const TAB_FILTER: Record<LeaseTab, (lease: Lease) => boolean> = {
-  active: (l) => l.status === "active" || l.status === "ending-soon",
-  completed: (l) => l.status === "completed",
-  overdue: (l) => l.status === "overdue",
+  current: (l) => l.status !== "completed",
+  past: (l) => l.status === "completed",
 };
 
-const TAB_LABEL: Record<LeaseTab, string> = { active: "Active", completed: "Completed", overdue: "Overdue" };
+const TAB_LABEL: Record<LeaseTab, string> = { current: "Now", past: "Returned" };
 
 const EMPTY_COPY: Record<LeaseTab, { title: string; description: string }> = {
-  active: { title: "No active leases", description: "Lease a battery from a nearby kiosk to get started." },
-  completed: { title: "No completed leases yet", description: "Leases you've returned will show up here." },
-  overdue: { title: "Nothing overdue", description: "Every battery you've leased is on time." },
+  current: { title: "No battery right now", description: "Lease one from a kiosk near you." },
+  past: { title: "Nothing returned yet", description: "Batteries you bring back will show here." },
 };
 
 export function LeasePanel({ extendOptions, issueTypes }: LeasePanelProps) {
@@ -43,7 +43,7 @@ export function LeasePanel({ extendOptions, issueTypes }: LeasePanelProps) {
   const { state, retry } = useSimulatedLoad("We couldn't load your leases. Check your connection and try again.");
 
   const tabParam = searchParams.get("tab");
-  const tab: LeaseTab = tabParam === "completed" || tabParam === "overdue" ? tabParam : "active";
+  const tab: LeaseTab = tabParam === "past" ? "past" : "current";
   const leaseId = searchParams.get("lease");
   const leases = state.status === "ready" && !state.forceEmpty ? allLeases : [];
 
@@ -78,9 +78,9 @@ export function LeasePanel({ extendOptions, issueTypes }: LeasePanelProps) {
         action={
           <Link
             href="/leases"
-            className="inline-flex h-10 items-center rounded-md border border-line px-4 text-sm font-medium text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            className="inline-flex h-12 items-center rounded-md border border-line px-4 text-base font-semibold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           >
-            See all leases
+            See my leases
           </Link>
         }
       />
@@ -94,23 +94,23 @@ export function LeasePanel({ extendOptions, issueTypes }: LeasePanelProps) {
   }));
   const rows = leases
     .filter(TAB_FILTER[tab])
-    .sort(tab === "completed" ? (a, b) => Date.parse(b.endsAt) - Date.parse(a.endsAt) : byLeaseUrgency);
+    .sort(tab === "past" ? (a, b) => Date.parse(b.endsAt) - Date.parse(a.endsAt) : byLeaseUrgency);
 
   return (
     <div className="flex flex-col gap-4">
-      <LeaseTabs tabs={tabs} value={tab} onChange={(next) => updateParams({ tab: next === "active" ? null : next })} />
+      <LeaseTabs tabs={tabs} value={tab} onChange={(next) => updateParams({ tab: next === "current" ? null : next })} />
       <div role="tabpanel" id={panelId(tab)} aria-labelledby={tabId(tab)} tabIndex={0} className="rounded-lg bg-surface p-2 shadow-card focus-visible:outline-2 focus-visible:outline-focus">
         {rows.length === 0 ? (
           <EmptyState
             title={EMPTY_COPY[tab].title}
             description={EMPTY_COPY[tab].description}
             action={
-              tab === "active" ? (
+              tab === "current" ? (
                 <Link
                   href="/batteries"
-                  className="inline-flex h-10 items-center rounded-md border border-line px-4 text-sm font-medium text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                  className="inline-flex h-12 items-center rounded-md border border-line px-4 text-base font-semibold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
                 >
-                  Browse batteries
+                  Find a battery
                 </Link>
               ) : undefined
             }
@@ -125,7 +125,6 @@ export function LeasePanel({ extendOptions, issueTypes }: LeasePanelProps) {
           </ul>
         )}
       </div>
-      <p className="text-center text-xs text-ink-muted">Demo data. Changes reset when you reload the page.</p>
     </div>
   );
 }

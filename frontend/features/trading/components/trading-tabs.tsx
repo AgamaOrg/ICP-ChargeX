@@ -11,9 +11,9 @@ type TradingTabsProps = {
 const TABS: TradingTab[] = ["market", "tracking", "portfolio"];
 
 const LABEL: Record<TradingTab, string> = {
-  market: "Market",
-  tracking: "Tracking",
-  portfolio: "Portfolio",
+  market: "Buy",
+  tracking: "My battery",
+  portfolio: "Earnings",
 };
 
 export const tradingTabId = (tab: TradingTab) => `trading-tab-${tab}`;
@@ -59,7 +59,7 @@ export function TradingTabs({ value, onChange }: TradingTabsProps) {
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(tab)}
             onKeyDown={(event) => onKeyDown(event, index)}
-            className={`min-h-11 rounded-sm px-2 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${selected ? "bg-surface text-ink shadow-card" : "text-ink-muted"}`}
+            className={`min-h-12 rounded-sm px-2 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${selected ? "bg-surface text-ink shadow-card" : "text-ink-muted"}`}
           >
             {LABEL[tab]}
           </button>

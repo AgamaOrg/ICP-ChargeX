@@ -14,7 +14,6 @@ import type {
   BatteryTracking,
   EnergyOffer,
   NewOfferInput,
-  OfferSort,
   PortfolioSummary,
   TradeRecord,
   TradingTab,
@@ -45,8 +44,6 @@ export function TradingWorkspace({ initialOffers, initialTrades, portfolio, trac
 
   const tabParam = searchParams.get("tab");
   const tab: TradingTab = tabParam === "tracking" || tabParam === "portfolio" ? tabParam : "market";
-  const sortParam = searchParams.get("sort");
-  const sort: OfferSort = sortParam === "nearby" || sortParam === "energy" ? sortParam : "price";
   const offerId = searchParams.get("offer");
   const selectedOffer = market.offers.find((offer) => offer.id === offerId) ?? null;
   const createOpen = searchParams.get("sheet") === "new-offer";
@@ -79,7 +76,7 @@ export function TradingWorkspace({ initialOffers, initialTrades, portfolio, trac
     <div className="flex flex-col gap-4 px-4 pb-6">
       <TradingTabs value={tab} onChange={(next) => updateParams({ tab: next === "market" ? null : next })} />
 
-      <p role="status" aria-live="polite" className="text-sm text-ink-muted empty:hidden">
+      <p role="status" aria-live="polite" className="text-base font-medium text-success empty:hidden">
         {market.notice}
       </p>
 
@@ -93,8 +90,6 @@ export function TradingWorkspace({ initialOffers, initialTrades, portfolio, trac
         {tab === "market" && (
           <MarketBrowser
             offers={market.offers}
-            sort={sort}
-            onSortChange={(next) => updateParams({ sort: next === "price" ? null : next })}
             onBuy={(id) => updateParams({ offer: id })}
             onCreateOffer={() => updateParams({ sheet: "new-offer" })}
             empty={state.forceEmpty}
@@ -132,14 +127,14 @@ export function TradingWorkspace({ initialOffers, initialTrades, portfolio, trac
       <Sheet
         open={cancelTarget !== null}
         onClose={() => setCancelTarget(null)}
-        title="Cancel this offer?"
+        title="Stop selling?"
         footer={
           <>
             <Button variant="danger" onClick={confirmCancel}>
-              Cancel offer
+              Stop selling
             </Button>
-            <Button variant="ghost" onClick={() => setCancelTarget(null)}>
-              Keep offer
+            <Button variant="secondary" onClick={() => setCancelTarget(null)}>
+              Keep selling
             </Button>
           </>
         }
@@ -147,10 +142,8 @@ export function TradingWorkspace({ initialOffers, initialTrades, portfolio, trac
         {cancelTarget && (
           <>
             <p className="text-base text-ink">
-              Your offer for {formatEnergy(cancelTarget.energyKwh)} at {cancelTarget.kioskName} will be removed from
-              the market. Buyers will no longer see it.
+              Your {formatEnergy(cancelTarget.energyKwh)} at {cancelTarget.kioskName} will be taken off the list.
             </p>
-            <p className="mt-3 text-sm text-ink-muted">Demo only. Nothing is sold and no payment is affected.</p>
           </>
         )}
       </Sheet>

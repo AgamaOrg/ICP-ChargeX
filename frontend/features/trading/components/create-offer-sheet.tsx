@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
 import { TextField } from "@/components/ui/text-field";
-import { formatEnergy, formatMoney, formatPercent } from "@/lib/format";
+import { formatEnergy, formatMoney } from "@/lib/format";
 import { spareEnergyKwh } from "../data/mock";
 import type { BatteryTracking, NewOfferInput } from "../types";
 
@@ -67,70 +67,46 @@ function CreateOfferSheetContent({ open, onClose, tracking, onCreated }: CreateO
   const footer = (
     <>
       <Button onClick={handleSubmit} disabled={!tracking}>
-        Publish offer
+        Start selling
       </Button>
-      <p className="text-center text-xs text-ink-muted">Demo only — your offer is not sent to a real canister.</p>
     </>
   );
 
   return (
-    <Sheet open={open} onClose={onClose} title="Create offer" footer={footer}>
+    <Sheet open={open} onClose={onClose} title="Sell extra power" footer={footer}>
       {!tracking ? (
-        <p className="text-sm text-ink-muted">
-          You need a leased battery before you can offer spare energy. Lease a battery first, then come back.
-        </p>
+        <p className="text-base text-ink-muted">Lease a battery first. Then you can sell what you don&apos;t use.</p>
       ) : (
         <div className="flex flex-col gap-4">
-          <p className="text-sm text-ink-muted">
-            Offer spare energy from a battery you are leasing. Buyers pick it up at the kiosk.
+          <p className="text-base text-ink-muted">
+            You can sell up to {formatEnergy(maxEnergyKwh)}. Buyers pick it up at {tracking.kioskName}.
           </p>
 
-          <dl className="rounded-md bg-surface-muted p-3 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-ink-muted">Battery</dt>
-              <dd className="text-ink">{tracking.batteryLabel}</dd>
-            </div>
-            <div className="mt-1 flex justify-between gap-3">
-              <dt className="text-ink-muted">Pickup</dt>
-              <dd className="text-right text-ink">{tracking.kioskName}</dd>
-            </div>
-            <div className="mt-1 flex justify-between gap-3">
-              <dt className="text-ink-muted">Spare energy</dt>
-              <dd className="tabular-nums text-ink">
-                {formatEnergy(maxEnergyKwh)} · {formatPercent(tracking.healthPercent)} health
-              </dd>
-            </div>
-          </dl>
-
           <TextField
-            label="Energy to offer (kWh)"
+            label="How many kWh to sell?"
             inputMode="decimal"
             value={energy}
             onChange={(event) => {
               setEnergy(event.target.value);
               setEnergyError(null);
             }}
-            hint={`Up to ${formatEnergy(maxEnergyKwh)} based on the current charge.`}
             error={energyError ?? undefined}
           />
 
           <TextField
-            label="Price per kWh (₱)"
+            label="Your price for each kWh (₱)"
             inputMode="decimal"
             value={price}
             onChange={(event) => {
               setPrice(event.target.value);
               setPriceError(null);
             }}
-            hint="Buyers pay this rate for each kWh they take."
             error={priceError ?? undefined}
           />
 
-          <dl className="flex flex-col gap-1 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-ink-muted">Potential earnings</dt>
-              <dd className="tabular-nums text-ink">{formatMoney(potentialMinorUnits)}</dd>
-            </div>
+          <dl className="flex justify-between gap-3 rounded-lg border border-line p-4 text-xl font-semibold text-ink">
+            <dt>You could earn</dt>
+            <dd className="tabular-nums">{formatMoney(potentialMinorUnits)}</dd>
           </dl>
         </div>
       )}

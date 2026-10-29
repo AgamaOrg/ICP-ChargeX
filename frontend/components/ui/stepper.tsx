@@ -18,7 +18,7 @@ export function Stepper({ steps, current }: StepperProps) {
                 className={`h-1 rounded-full ${state === "todo" ? "bg-surface-muted" : "bg-primary"}`}
               />
               <span
-                className={`truncate text-xs ${state === "current" ? "font-semibold text-ink" : "text-ink-muted"}`}
+                className={`truncate text-sm ${state === "current" ? "font-semibold text-ink" : "text-ink-muted"}`}
               >
                 {state === "done" ? "✓ " : `${index + 1} `}
                 {step}

@@ -2,7 +2,6 @@ import type { BatteryStatus } from "@/lib/types/battery";
 
 export type TradingTab = "market" | "tracking" | "portfolio";
 
-export type OfferSort = "price" | "nearby" | "energy";
 
 export type EnergyOffer = {
   id: string;

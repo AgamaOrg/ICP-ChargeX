@@ -11,7 +11,7 @@ import { TradingWorkspace, TradingWorkspaceSkeleton } from "./components/trading
 export default function Trading() {
   return (
     <>
-      <PageHeader title="Energy trading" />
+      <PageHeader title="Buy and sell power" />
       <Suspense fallback={<TradingWorkspaceSkeleton />}>
         <TradingWorkspace
           initialOffers={mockMarketOffers}

@@ -5,7 +5,7 @@ import type { AppNotification, QuickActionsContext, TradingSummary } from "../ty
 const hoursAgo = (hours: number) => new Date(MOCK_NOW_MS - hours * 3_600_000).toISOString();
 const daysAgo = (days: number) => hoursAgo(days * 24);
 
-export const mockUserName = "Demo Rider";
+export const mockUserName = "Alex";
 
 /** The battery the demo user currently holds. */
 export const mockDashboardBattery: Battery | null = mockBatteries[0] ?? null;
@@ -65,11 +65,11 @@ export const mockNotifications: AppNotification[] = [
     read: false,
   },
   {
-    id: "n-3",
-    title: "Payment received",
-    body: "₱120.00 for your CX-BAT-014 lease. Demo only — no real payment was made.",
-    createdAt: hoursAgo(24),
-    severity: "success",
+    id: "n-1",
+    title: "Need more time?",
+    body: "You can extend CX-BAT-063 from Leases before it is due.",
+    createdAt: hoursAgo(0.4),
+    severity: "info",
     category: "payment",
     read: true,
   },
@@ -80,6 +80,17 @@ export const mockNotifications: AppNotification[] = [
     createdAt: daysAgo(2),
     severity: "info",
     category: "maintenance",
+    read: true,
+  },
+  // Was a "Payment received" notice; without a demo label it would present a
+  // fake payment as real (rules.md §4), so it is a non-payment item now.
+  {
+    id: "n-3",
+    title: "Lease completed",
+    body: "You returned CX-BAT-021 to Kiosk B on time.",
+    createdAt: daysAgo(4),
+    severity: "success",
+    category: "lease",
     read: true,
   },
 ];

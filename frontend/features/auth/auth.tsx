@@ -30,11 +30,11 @@ export default function Auth({ mode }: AuthProps) {
   const copy = COPY[mode];
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-8">
+    <main className="flex flex-1 flex-col items-center justify-center bg-linear-to-b from-primary-soft/70 via-canvas to-canvas px-4 py-8">
       <div className="flex w-full max-w-md flex-col gap-6">
         <header className="flex flex-col gap-1">
-          <div className="mb-4">
-            <Logo />
+          <div className="mb-6">
+            <Logo size="md" tagline />
           </div>
           <h1 className="text-2xl font-semibold text-ink">{copy.title}</h1>
           <p className="text-base text-ink-muted">{copy.subtitle}</p>

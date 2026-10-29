@@ -51,7 +51,7 @@ Route choices are proposals until the first route is created; update `architectu
 These are prerequisites, not deliverables. Keep them minimal — build only what the next item needs.
 
 - [x] App shell: root layout metadata, `components/common/page-header.tsx`, `components/common/bottom-nav.tsx`, `components/common/app-shell.tsx` (route group `app/(app)/`).
-- [~] Token contract in `app/globals.css` (palette requires approval; see `design.md` §4). Token names are in place with neutral placeholder values; the real palette is still to be chosen.
+- [x] Token contract in `app/globals.css` with the approved brand palette (`design.md` §4.3), plus the logo component and assets (`components/common/logo.tsx`, `public/brand/`).
 - [x] Mock login and sign-up (`features/auth/`, `/login`, `/signup`). Demo only: hardcoded credentials, no session.
 - [x] Primitives as used: `Button`, `Card`, `StatusPill`, `BatteryMeter`, `ListRow`, `Sheet`, `Skeleton`, `EmptyState`, plus `ErrorState`, `Stepper`, `TextField`, inline SVG icons (`components/ui/icons.tsx`).
 - [x] Shared mock fixtures for batteries and leases (`lib/mock/fixtures.ts`, with a fixed `MOCK_NOW` for deterministic first paint).
@@ -92,7 +92,7 @@ Outcome: one screen that answers "what is my battery doing, what do I owe, and w
 - Initial render is deterministic (no `Math.random()` in the first paint) so hydration stays clean.
 - Charge is clamped to 0–100 and announced accessibly (`role="meter"` or an equivalent labelled element).
 - Values are readable at 360px and do not reflow as they change.
-- The card states that data is simulated.
+- Simulated data is labelled in code comments. The on-screen "Simulated data" label was removed at the product owner's request (2026-10-29; see `architecture.md` §13).
 
 **Depends on:** tokens, `Card`, `StatusPill`, `BatteryMeter`.
 
@@ -219,7 +219,7 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 - Pins colored by status with a text label in the selected card.
 - Selected battery card docked at the bottom: label, distance, kiosk, charge, "View details".
 
-**Provider:** undecided. Leaflet or MapLibre needs approval and a dependency. Until then, ship the list view and a labeled placeholder map area.
+**Provider:** mapcn on MapLibre GL (approved 2026-10-29). Basemaps: Color (CARTO Voyager, default), Dark (CARTO Dark Matter), Satellite (Esri World Imagery + place labels), picked with a radio group on the map and kept in `?map=`. No API key. If MapLibre cannot start, the map area offers "Show list".
 
 **Mock data:** `mockBatteries` with `location.lat/lng`, `distanceKm`, `kioskName`, `status`, `chargePercent`, `pricePerHourMinorUnits`.
 
@@ -235,7 +235,9 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 - No API key is required for the default experience; any key would be an approval item.
 - Map container has a fixed height, no layout shift, and does not trap page scroll.
 
-**Depends on:** approval for a map library, tokens, `Card`, `Sheet`.
+**Depends on:** mapcn (`components/ui/map.tsx`), tokens, `Card`, `Sheet`.
+
+**Known gaps:** batteries at the same kiosk share a pin position and overlap (the list shows them all); the MapLibre worker loads from unpkg, so the map needs internet.
 
 ---
 
@@ -271,7 +273,7 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 **Goal:** turn a selected battery into a reviewable lease draft.
 
 **UI:**
-- Step 1 — Duration and start time (1 hour / 1 day / 1 week, custom later).
+- Step 1 — Duration only (1 hour / 1 day / 1 week). Leases start now; the start-time choice was removed for simplicity (2026-10-29).
 - Step 2 — Confirmation details (kiosk, pickup instructions, user contact placeholder).
 - Step 3 — Review: battery, duration, total, terms note.
 - Persistent stepper, back navigation, one primary action per step.
@@ -326,7 +328,7 @@ Outcome: a user can find a battery, understand it, lease it, pay for it (simulat
 **Goal:** manage existing leases: see status, extend, return, report an issue.
 
 **UI:**
-- Tabs: Active · Completed · Overdue (counts in tab labels).
+- Tabs: Now · Returned (counts in tab labels). Late leases are listed first under Now. Simplified from three tabs on 2026-10-29.
 - Rows with battery, status, time remaining, amount.
 - Detail view: timeline (start → now → end), actions, help.
 - Actions open confirmation sheets: Extend, Return, Report issue.
@@ -359,7 +361,7 @@ All values are mock data. Trades and offers live in memory and reset on reload. 
 
 **Files:** `features/trading/components/battery-tracking-panel.tsx`, `tracking-map.tsx`, `usage-chart.tsx`, `features/trading/hooks/use-battery-tracking.ts`
 
-**UI:** live charge and health meters, estimated range, kiosk and distance, a labelled placeholder GPS preview with updating coordinates, seven-day usage chart, and maintenance alerts with text + tone.
+**UI:** live charge meter, "You can drive about", where it is (kiosk and distance), battery condition word, and battery care alerts with text + tone. The GPS preview, coordinates, and usage chart were removed on 2026-10-29 to keep the screen simple.
 
 **States:** loading skeleton, empty ("No battery to track" + "Find a battery"), error + retry, ready.
 
@@ -369,7 +371,7 @@ All values are mock data. Trades and offers live in memory and reset on reload. 
 
 **Files:** `features/trading/components/market-browser.tsx`
 
-**UI:** open offers with seller, battery, pickup kiosk, distance, health, available kWh, and price per kWh. Sort by price, distance, or energy. "Create offer" is the single primary action.
+**UI:** open offers, cheapest first: kWh, price per kWh, seller, kiosk, distance, and an outlined Buy button. No sort control (removed 2026-10-29). "Sell my extra power" sits below the list.
 
 **States:** loading, empty ("No open offers" + create action), error, ready.
 

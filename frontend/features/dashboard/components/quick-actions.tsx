@@ -25,7 +25,7 @@ export function QuickActions({ trackedBatteryId, activeLease, overdueLeaseId }: 
       ? { kind: "button", label: "Return", icon: ReturnIcon, onPress: () => setReturnOpen(true) }
       : { kind: "disabled", label: "Return", icon: ReturnIcon, reason: "No active lease to return." },
     overdueLeaseId
-      ? { kind: "link", label: "Pay", icon: WalletIcon, href: `/leases?tab=overdue&lease=${overdueLeaseId}` }
+      ? { kind: "link", label: "Pay", icon: WalletIcon, href: `/leases?lease=${overdueLeaseId}` }
       : {
           kind: "disabled",
           label: "Pay",
@@ -109,7 +109,6 @@ export function QuickActions({ trackedBatteryId, activeLease, overdueLeaseId }: 
             <li>Slide it into an open slot until it clicks.</li>
             <li>Your lease ends when the kiosk confirms the return.</li>
           </ol>
-          <p className="mt-4 text-sm text-ink-muted">Demo only. Returns aren&apos;t connected to real kiosks yet.</p>
         </Sheet>
       )}
     </section>

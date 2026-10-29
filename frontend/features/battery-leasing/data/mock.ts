@@ -6,7 +6,8 @@ export const DEFAULT_RADIUS_KM = 5;
 export const WIDE_RADIUS_KM = 15;
 
 /** Shown when location access is unavailable or denied. */
-export const mockFallbackLocationLabel = "Makati (demo location)";
+// Demo stand-in for the rider's position until location is shared.
+export const mockFallbackLocationLabel = "Makati";
 
 export const mockDurationOptions: DurationOption[] = [
   { id: "1h", label: "1 hour", hours: 1 },

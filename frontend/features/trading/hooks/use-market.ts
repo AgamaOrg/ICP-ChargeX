@@ -39,7 +39,8 @@ export function useMarket(initialOffers: EnergyOffer[], initialTrades: TradeReco
       },
       ...current,
     ]);
-    setNotice(`Bought ${formatEnergy(amount)} from ${offer.sellerName}. Demo only — no real payment was made.`);
+    // The demo note stays: a purchase must never look like a real payment (rules.md §4).
+    setNotice(`You bought ${formatEnergy(amount)} from ${offer.sellerName}. This is a demo. No money was taken.`);
   }
 
   function createOffer(input: NewOfferInput) {
@@ -63,12 +64,12 @@ export function useMarket(initialOffers: EnergyOffer[], initialTrades: TradeReco
       },
       ...current,
     ]);
-    setNotice(`Your offer for ${formatEnergy(input.energyKwh)} is live in the demo market.`);
+    setNotice(`Your ${formatEnergy(input.energyKwh)} is now for sale.`);
   }
 
   function cancelOffer(offerId: string) {
     setOffers((current) => current.filter((item) => item.id !== offerId));
-    setNotice("Offer cancelled. Nothing was sold.");
+    setNotice("You stopped selling.");
   }
 
   return { offers, trades, notice, buy, createOffer, cancelOffer };

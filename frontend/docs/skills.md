@@ -48,7 +48,7 @@ Specific things this version does differently that matter to this project:
 
 | Skill | Needed for | Notes |
 | --- | --- | --- |
-| Map rendering | Available batteries map | Provider undecided (Leaflet vs MapLibre). Requires approval to install. Must degrade to a list when unavailable |
+| Map rendering | Available batteries map | mapcn on MapLibre GL (`components/ui/map.tsx`), CARTO and Esri basemaps without API keys. Must degrade to a list when unavailable |
 | Geolocation | Map, battery details | Permission prompts, denied state, fallback location |
 | Dialog / focus management | Battery details modal, confirmations | Prefer native `<dialog>` before adding a library |
 | Multi-step form / wizard | Lease creation wizard | Single state object, per-step validation, back/forward, review step |
@@ -72,7 +72,7 @@ Maps every roadmap item to the skills it needs. Use it to spot missing capabilit
 | 1.3 Energy trading summary | Layout, formatting | Data visualization | Chart lib **TBD** |
 | 1.4 Quick actions panel | Button hierarchy, routing, a11y | — | None (icons TBD) |
 | 1.5 Notification center | Lists, relative time, a11y live region | Notification feeds | None |
-| 2.1 Available batteries map | Responsive layout, loading/error | Map + geolocation | Map lib **TBD** |
+| 2.1 Available batteries map | Responsive layout, loading/error | Map + geolocation | mapcn + `maplibre-gl` (approved) |
 | 2.2 Battery details modal | Dialog, focus trap, scroll lock | Status semantics | None preferred |
 | 2.3 Lease creation wizard | Complex state, validation | Multi-step form | None preferred |
 | 2.4 Payment interface | State machine, error handling | Simulated payments | None (mock only) |

@@ -108,72 +108,55 @@ function TradeSheetContent({ offer, open, onClose, onComplete }: TradeSheetProps
     ) : (
       <>
         <Button onClick={handleSubmit} loading={phase.status === "processing"} disabled={!offer}>
-          {phase.status === "processing" ? "Processing…" : `Buy for ${formatMoney(totalMinorUnits)}`}
+          {phase.status === "processing" ? "Buying…" : `Pay ${formatMoney(totalMinorUnits)}`}
         </Button>
-        <p className="text-center text-xs text-ink-muted">Demo only — no real trade or payment is processed.</p>
+        {/* Required by rules.md §4: never imply a real payment. */}
+        <p className="text-center text-sm text-ink-muted">This is a demo. No money will be taken.</p>
       </>
     );
 
   return (
-    <Sheet open={open} onClose={handleClose} title="Buy energy" footer={footer}>
+    <Sheet open={open} onClose={handleClose} title="Buy power" footer={footer}>
       {phase.status === "success" && offer ? (
         <div role="status" className="flex flex-col gap-3">
-          <p className="text-sm text-ink-muted">Trade complete</p>
-          <p className="text-3xl font-semibold tabular-nums text-ink">{formatMoney(phase.totalMinorUnits)}</p>
-          <p className="text-base text-ink">
-            Bought {formatEnergy(phase.energyKwh)} from {offer.sellerName}.
+          <p className="text-lg font-medium text-success">
+            <span aria-hidden="true">✓ </span>Done
           </p>
-          <dl className="rounded-md bg-surface-muted p-3 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-ink-muted">Battery</dt>
-              <dd className="text-ink">{offer.batteryLabel}</dd>
-            </div>
-            <div className="mt-1 flex justify-between gap-3">
-              <dt className="text-ink-muted">Pickup</dt>
-              <dd className="text-right text-ink">{offer.kioskName}</dd>
-            </div>
-          </dl>
-          <p className="text-xs text-ink-muted">Demo only — the trade is not connected to a real canister.</p>
+          <p className="text-4xl font-semibold tabular-nums text-ink">{formatMoney(phase.totalMinorUnits)}</p>
+          <p className="text-lg text-ink">
+            You bought {formatEnergy(phase.energyKwh)} from {offer.sellerName}. Get it at {offer.kioskName}.
+          </p>
+          {/* Required by rules.md §4: never imply a real payment. */}
+          <p className="text-sm text-ink-muted">This is a demo. No money was taken.</p>
         </div>
       ) : phase.status === "failure" ? (
         <ErrorState message={phase.message} />
       ) : offer ? (
         <div className="flex flex-col gap-4">
-          <dl className="rounded-md bg-surface-muted p-3 text-sm">
-            <div className="flex justify-between gap-3">
-              <dt className="text-ink-muted">Seller</dt>
-              <dd className="text-ink">{offer.sellerName}</dd>
-            </div>
-            <div className="mt-1 flex justify-between gap-3">
-              <dt className="text-ink-muted">Battery</dt>
-              <dd className="text-ink">{offer.batteryLabel}</dd>
-            </div>
-            <div className="mt-1 flex justify-between gap-3">
-              <dt className="text-ink-muted">Pickup</dt>
-              <dd className="text-right text-ink">{offer.kioskName}</dd>
-            </div>
-          </dl>
+          <p className="text-base text-ink-muted">
+            From {offer.sellerName} · Get it at {offer.kioskName}
+          </p>
 
           <TextField
-            label="Energy to buy (kWh)"
+            label="How many kWh?"
             inputMode="decimal"
             value={amount}
             onChange={(event) => {
               setAmount(event.target.value);
               setError(null);
             }}
-            hint={`Available ${formatEnergy(offer.energyKwh)} · Minimum ${formatEnergy(offer.minPurchaseKwh)}`}
+            hint={`From ${formatEnergy(offer.minPurchaseKwh)} up to ${formatEnergy(offer.energyKwh)}`}
             error={error ?? undefined}
             disabled={phase.status === "processing"}
           />
 
-          <dl className="flex flex-col gap-1 text-sm">
+          <dl className="flex flex-col gap-2 rounded-lg border border-line p-4 text-base">
             <div className="flex justify-between gap-3">
               <dt className="text-ink-muted">Price per kWh</dt>
               <dd className="tabular-nums text-ink">{formatMoney(offer.pricePerKwhMinorUnits)}</dd>
             </div>
-            <div className="flex justify-between gap-3 text-base font-semibold">
-              <dt>Total</dt>
+            <div className="flex justify-between gap-3 text-xl font-semibold text-ink">
+              <dt>You pay</dt>
               <dd className="tabular-nums">{formatMoney(totalMinorUnits)}</dd>
             </div>
           </dl>

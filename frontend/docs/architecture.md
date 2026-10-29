@@ -20,7 +20,7 @@
 | Cache model | `cacheComponents: true`, `partialPrefetching: true` | — | Dynamic by default; `use cache` is opt-in |
 | Testing | Not set up yet | — | Verification is lint + typecheck + build for now |
 
-There is **no UI library, no state library, no data-fetching library, and no map or chart library** installed. Adding one requires approval per `rules.md` §3.
+Approved additions: **mapcn** (vendored in `components/ui/map.tsx`) with its dependencies `maplibre-gl`, `lucide-react`, and `@types/geojson`. There is still **no UI kit, state library, data-fetching library, or chart library**. Adding one requires approval per `rules.md` §3.
 
 ---
 
@@ -199,10 +199,10 @@ Routes are thin. Proposed map (update when a route is actually created):
 | `/` | `features/dashboard` | Main dashboard (built, inside the `(app)` shell) |
 | `/login` | `features/auth` | Mock email/password login with visible demo credentials |
 | `/signup` | `features/auth` | Mock sign-up; accounts live in memory until reload |
-| `/batteries` | `features/battery-leasing` | List + placeholder map. `?view=map`, `?battery=<id>` selects, `&sheet=details` opens the details sheet (deep link) |
+| `/batteries` | `features/battery-leasing` | List + mapcn map. `?view=map`, `&map=dark\|satellite` picks the basemap (Color is the default), `?battery=<id>` selects, `&sheet=details` opens the details sheet (deep link) |
 | `/batteries/lease` | `features/battery-leasing` | Lease wizard **and** the simulated payment phase (`?battery=<id>`). One route keeps the single wizard state object |
-| `/leases` | `features/battery-leasing` | Lease management. `?tab=completed\|overdue`, `?lease=<id>` opens the detail view |
-| `/trading` | `features/trading` | Battery tracking + energy trading. `?tab=market\|tracking\|portfolio`, `?sort=price\|nearby\|energy`, `?offer=<id>` opens the buy sheet, `&sheet=new-offer` opens the offer sheet |
+| `/leases` | `features/battery-leasing` | Lease management. `?tab=past` shows returned leases (default is current), `?lease=<id>` opens the detail view |
+| `/trading` | `features/trading` | Battery tracking + energy trading. `?tab=market\|tracking\|portfolio`, `?offer=<id>` opens the buy sheet, `&sheet=new-offer` opens the offer sheet |
 
 Not created (superseded): `/batteries/[batteryId]` → `?battery=&sheet=details`; `/batteries/lease/payment` → payment phase inside `/batteries/lease`; `/notifications` → notification sheet opened from the dashboard bell.
 
@@ -287,7 +287,7 @@ export type Lease = {
 - Tokens are CSS variables declared in `app/globals.css` and exposed to Tailwind with `@theme inline`.
 - Components use semantic classes (`bg-canvas`, `bg-surface`, `text-ink`, `text-ink-muted`, `border-line`, `bg-primary`), never raw palette values.
 - No hex codes in `.tsx`. No arbitrary values like `bg-[#123456]`.
-- Current `globals.css` still uses scaffold `--background` / `--foreground`. Migrating it to the token contract in `design.md` happens in one dedicated change, with approval.
+- `globals.css` holds the approved brand palette (`design.md` §4.3). Brand accents `brand-green` and `brand-blue` are for fills, gradients, and the logo only.
 - Class ordering: layout → spacing → typography → color → state. Keep it consistent; no formatter enforces it yet.
 - No `cn()` helper exists yet. Add it (with approval) when the second primitive needs conditional classes.
 
@@ -354,3 +354,7 @@ Small, append-only. New decisions need the human's approval.
 | 2026-10-28 | Mock email/password login at `/login` + `/signup`, hardcoded demo credentials shown on screen | Human-approved base screen; real login will be Internet Identity behind an adapter. No session is created |
 | 2026-10-28 | Neutral placeholder token values in `globals.css` | Human-approved so components can use token names before the palette is chosen |
 | 2026-10-28 | Energy trading + battery tracking on `/trading`, with a fourth bottom-nav item | Human-approved scope change; the roadmap previously excluded trading screens. Still mock-only, with URL-held view state |
+| 2026-10-29 | Simplify every screen for older riders and tricycle drivers | Human request. Bigger text and buttons (primitives), plain words, two lease tabs, no trading sort, no start-time step, no GPS preview or usage chart, battery list shows only leasable batteries. Clutter labels like "Demo data" removed; the "no money will be taken" note stays on every money action (`rules.md` §4) and on issue reports. `tracking-map.tsx` and `usage-chart.tsx` are now unused, kept until deletion is approved |
+| 2026-10-29 | No on-screen demo or simulation labels on the dashboard (`/`) | Human request. Data is still mock and labelled in code comments (allowed by `rules.md` §4). The dashboard must not show a payment as completed, so the "Payment received" notification was replaced. Other screens (payment, leases, trading, batteries, auth) keep their labels |
+| 2026-10-29 | mapcn (MapLibre GL) for the battery map, with Color (CARTO Voyager), Dark (CARTO Dark Matter), and Satellite (Esri World Imagery) basemaps | Human-approved. No API keys. External requests: CARTO and Esri tiles, and MapLibre's worker script from unpkg (mapcn default). `components/ui/map.tsx` is vendored: opted out of React Compiler with `"use no memo"`; shadcn token names are aliased in `globals.css`; `lib/utils.ts` provides its `cn` |
+| 2026-10-29 | Brand palette and logo from the Figma file "chargex" replace the placeholder tokens | Human-approved. Deep teal primary, green and blue teal accents, mint, charcoal, off-white; logo exported to `public/brand/` and served through `components/common/logo.tsx` |

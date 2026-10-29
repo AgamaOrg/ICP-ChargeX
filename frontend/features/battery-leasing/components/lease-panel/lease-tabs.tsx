@@ -35,7 +35,7 @@ export function LeaseTabs({ tabs, value, onChange }: LeaseTabsProps) {
   }
 
   return (
-    <div role="tablist" aria-label="Leases" className="grid grid-cols-3 gap-1 rounded-md bg-surface-muted p-1">
+    <div role="tablist" aria-label="Leases" className="grid grid-cols-2 gap-1 rounded-md bg-surface-muted p-1">
       {tabs.map((tab, index) => {
         const selected = tab.id === value;
         return (
@@ -52,7 +52,7 @@ export function LeaseTabs({ tabs, value, onChange }: LeaseTabsProps) {
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(tab.id)}
             onKeyDown={(event) => onKeyDown(event, index)}
-            className={`min-h-11 rounded-sm px-2 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${selected ? "bg-surface text-ink shadow-card" : "text-ink-muted"}`}
+            className={`min-h-12 rounded-sm px-2 text-base font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${selected ? "bg-surface text-ink shadow-card" : "text-ink-muted"}`}
           >
             {tab.label} ({tab.count})
           </button>

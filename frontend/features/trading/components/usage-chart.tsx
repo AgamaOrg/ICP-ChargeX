@@ -20,7 +20,7 @@ export function UsageChart({ days }: UsageChartProps) {
           <div key={day.dateIso} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
             {/* Inline style: bar height is a runtime value. */}
             <div
-              className="w-full rounded-sm bg-primary"
+              className="w-full rounded-sm bg-linear-to-t from-primary to-brand-green"
               style={{ height: `${Math.max(4, (day.kwh / max) * 100)}%` }}
             />
             <span className="text-[0.7rem] text-ink-muted">{formatWeekday(day.dateIso)}</span>

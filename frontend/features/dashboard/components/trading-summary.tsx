@@ -28,11 +28,10 @@ export function TradingSummary({ summary }: TradingSummaryProps) {
 
   return (
     <Card aria-labelledby="trading-title">
-      <div className="mb-3 flex items-baseline justify-between gap-2">
+      <div className="mb-3">
         <h2 id="trading-title" className="text-base font-semibold text-ink">
           Energy trading
         </h2>
-        <span className="text-xs text-ink-muted">Demo data</span>
       </div>
       {state.status === "error" ? (
         <ErrorState message={state.message} onRetry={retry} />
@@ -69,7 +68,7 @@ function TradingDetails({ summary }: { summary: TradingSummaryData }) {
             <div key={day.dateIso} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
               {/* Inline style: bar height is a runtime value. */}
               <div
-                className="w-full rounded-sm bg-primary"
+                className="w-full rounded-sm bg-linear-to-t from-primary to-brand-green"
                 style={{ height: `${Math.max(4, (day.earnedMinorUnits / max) * 100)}%` }}
               />
               <span className="text-[0.7rem] text-ink-muted">{formatWeekday(day.dateIso)}</span>

@@ -16,8 +16,8 @@ import { StepDetails } from "./step-details";
 import { StepDuration } from "./step-duration";
 import { StepReview } from "./step-review";
 
-const STEPS = ["Duration", "Details", "Review"];
-const STEP_TITLES = ["Choose a duration", "Pickup details", "Review your lease"];
+const STEPS = ["How long", "Pick up", "Check"];
+const STEP_TITLES = ["How long?", "Where to pick up", "Check your lease"];
 
 type LeaseWizardProps = {
   batteries: Battery[];
@@ -131,9 +131,7 @@ function WizardFlow({ battery, durationOptions, startOptions, paymentMethods }: 
           <h2 ref={headingRef} tabIndex={-1} className="text-xl font-semibold text-ink focus:outline-none">
             {title}
           </h2>
-          <p className="truncate text-sm text-ink-muted">
-            {battery.label} · {battery.kioskName}
-          </p>
+          <p className="truncate text-base text-ink-muted">{battery.kioskName}</p>
         </div>
         {!paid && (
           <Button variant="ghost" onClick={requestLeave}>
@@ -161,12 +159,9 @@ function WizardFlow({ battery, durationOptions, startOptions, paymentMethods }: 
             <StepDuration
               pricePerHourMinorUnits={battery.pricePerHourMinorUnits}
               durationOptions={durationOptions}
-              startOptions={startOptions}
               durationId={draft.durationId}
-              startId={draft.startId}
               error={errors.durationId}
               onDuration={(durationId) => dispatch({ type: "set-duration", durationId })}
-              onStart={(startId) => dispatch({ type: "set-start", startId })}
             />
           )}
           {step === 1 && (
@@ -207,7 +202,7 @@ function WizardFlow({ battery, durationOptions, startOptions, paymentMethods }: 
                 disabled={!isStepValid(draft, step)}
                 onClick={() => dispatch({ type: "next" })}
               >
-                Continue
+                Next
               </Button>
             ) : (
               <Button
@@ -215,7 +210,7 @@ function WizardFlow({ battery, durationOptions, startOptions, paymentMethods }: 
                 loading={reservation.state.status === "submitting"}
                 onClick={continueToPayment}
               >
-                {reservation.state.status === "error" ? "Try again" : "Continue to payment"}
+                {reservation.state.status === "error" ? "Try again" : "Go to payment"}
               </Button>
             )}
           </div>

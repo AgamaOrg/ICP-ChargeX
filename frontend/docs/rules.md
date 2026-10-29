@@ -73,7 +73,7 @@ Get explicit approval before:
 - Installing, removing, or upgrading any package, or editing `package.json` / `package-lock.json`.
 - Editing `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, or `.gitignore`.
 - Adding, renaming, or deleting routes in `app/`.
-- Changing global design tokens in `app/globals.css` (palette is deliberately undecided — see `design.md`).
+- Changing global design tokens in `app/globals.css` (the brand palette is approved and documented in `design.md` §4.3; values change only with approval).
 - Deleting or renaming existing files, or moving code between features.
 - Touching the Next.js managed block in `frontend/AGENTS.md`.
 - Introducing a third-party UI, map, chart, animation, or form library.
@@ -156,7 +156,7 @@ Comment **why**, not **what**. Delete commented-out code. No TODO without an own
 ## 5. Stop and ask when
 
 - Lint, type check, or build fails and the fix requires touching config or installing something.
-- The design is ambiguous (no palette yet, no map provider yet, unclear flow).
+- The design is ambiguous (unclear flow, a new basemap or tile provider, a colour or logo use not covered by `design.md` §4).
 - A feature needs data or behavior that does not exist in the mock layer.
 - Two docs disagree, or a rule blocks the obvious implementation.
 - You are about to do anything in section 3.

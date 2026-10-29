@@ -10,35 +10,32 @@ type StepReviewProps = {
   totalMinorUnits: number;
 };
 
-export function StepReview({ battery, draft, duration, start, totalMinorUnits }: StepReviewProps) {
+// Nothing is created here; the payment step carries the demo-only notice.
+export function StepReview({ battery, draft, duration, totalMinorUnits }: StepReviewProps) {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="text-sm text-ink-muted">Total</p>
-        <p className="text-3xl font-semibold tabular-nums text-ink">{formatMoney(totalMinorUnits)}</p>
-        <p className="text-sm text-ink-muted">
-          {duration.label} at {formatMoney(battery.pricePerHourMinorUnits)} / hour
-        </p>
+        <p className="text-base text-ink-muted">You will pay</p>
+        <p className="text-4xl font-semibold tabular-nums text-ink">{formatMoney(totalMinorUnits)}</p>
+        <p className="text-base text-ink-muted">for {duration.label}</p>
       </div>
 
-      <dl className="flex flex-col divide-y divide-line rounded-md border border-line text-sm">
+      <dl className="flex flex-col divide-y divide-line rounded-lg border border-line text-base">
         {[
-          ["Battery", battery.label],
-          ["Pick up", `${battery.kioskName}, ${battery.location.label}`],
-          ["Duration", duration.label],
-          ["Starts", start.label],
-          ["Picked up by", `${draft.contactName} · ${draft.contactPhone}`],
+          ["Pick up at", battery.kioskName],
+          ["How long", duration.label],
+          ["Name", draft.contactName],
+          ["Mobile", draft.contactPhone],
         ].map(([term, value]) => (
-          <div key={term} className="flex justify-between gap-4 px-3 py-3">
+          <div key={term} className="flex justify-between gap-4 px-4 py-3">
             <dt className="shrink-0 text-ink-muted">{term}</dt>
-            <dd className="text-right text-ink">{value}</dd>
+            <dd className="text-right font-medium text-ink">{value}</dd>
           </div>
         ))}
       </dl>
 
-      <p className="text-sm text-ink-muted">
-        Return the battery by the end of your lease. Extra time is charged at the hourly rate. This is a demo,
-        so no lease is actually created with a kiosk.
+      <p className="text-base text-ink-muted">
+        Bring it back on time. Extra time costs {formatMoney(battery.pricePerHourMinorUnits)} per hour.
       </p>
     </div>
   );

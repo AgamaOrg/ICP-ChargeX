@@ -13,6 +13,7 @@ import type { Battery } from "@/lib/types/battery";
 import type { FinderView, LocationPermission } from "../types";
 import { BatteryDetailsSheet } from "./battery-details-sheet";
 import { BatteryList } from "./battery-list";
+import { isMapStyleId } from "../data/map-styles";
 import { BatteryMap } from "./battery-map";
 import { LocationStatus } from "./location-status";
 import { SelectedBatteryCard } from "./selected-battery-card";
@@ -32,8 +33,10 @@ export function BatteryFinder({ batteries, defaultRadiusKm, wideRadiusKm, fallba
   const [radiusKm, setRadiusKm] = useState(defaultRadiusKm);
   const [permission, setPermission] = useState<LocationPermission>("idle");
 
-  // URL holds the shareable state: view, selected battery, open sheet.
+  // URL holds the shareable state: view, map style, selected battery, open sheet.
   const view: FinderView = searchParams.get("view") === "map" ? "map" : "list";
+  const mapParam = searchParams.get("map");
+  const mapStyle = isMapStyleId(mapParam) ? mapParam : "color";
   const selectedId = searchParams.get("battery");
   const detailsOpen = searchParams.get("sheet") === "details" && selectedId !== null;
   const selected = batteries.find((b) => b.id === selectedId) ?? null;
@@ -64,7 +67,10 @@ export function BatteryFinder({ batteries, defaultRadiusKm, wideRadiusKm, fallba
 
   const nearby =
     state.status === "ready" && !state.forceEmpty
-      ? batteries.filter((b) => b.distanceKm <= radiusKm).sort((a, b) => a.distanceKm - b.distanceKm)
+      ? batteries
+          // Only batteries a rider can take now; busy ones would just be noise.
+          .filter((b) => b.availability === "available" && b.distanceKm <= radiusKm)
+          .sort((a, b) => a.distanceKm - b.distanceKm)
       : [];
 
   return (
@@ -78,7 +84,7 @@ export function BatteryFinder({ batteries, defaultRadiusKm, wideRadiusKm, fallba
             type="button"
             aria-pressed={view === option}
             onClick={() => updateParams({ view: option === "list" ? null : option })}
-            className={`flex min-h-11 items-center justify-center gap-2 rounded-sm text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${view === option ? "bg-surface text-ink shadow-card" : "text-ink-muted"}`}
+            className={`flex min-h-12 items-center justify-center gap-2 rounded-sm text-base font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus ${view === option ? "bg-surface text-ink shadow-card" : "text-ink-muted"}`}
           >
             {option === "list" ? <ListIcon /> : <MapIcon />}
             {option === "list" ? "List" : "Map"}
@@ -93,36 +99,36 @@ export function BatteryFinder({ batteries, defaultRadiusKm, wideRadiusKm, fallba
       ) : nearby.length === 0 ? (
         <EmptyState
           title="No batteries nearby"
-          description={`We couldn't find a battery within ${formatDistance(radiusKm)}.`}
+          description={`No battery is free within ${formatDistance(radiusKm)} right now.`}
           action={
             radiusKm < wideRadiusKm ? (
               <Button variant="secondary" onClick={() => setRadiusKm(wideRadiusKm)}>
-                Search within {formatDistance(wideRadiusKm)}
+                Look farther
               </Button>
             ) : undefined
           }
         />
       ) : (
         <>
-          <p className="text-sm text-ink-muted">
-            {nearby.length} {nearby.length === 1 ? "battery" : "batteries"} within {formatDistance(radiusKm)}
-            {radiusKm < wideRadiusKm && (
-              <>
-                {" · "}
-                <button
-                  type="button"
-                  onClick={() => setRadiusKm(wideRadiusKm)}
-                  className="inline-flex min-h-11 items-center font-medium text-ink underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
-                >
-                  Search wider
-                </button>
-              </>
-            )}
+          <p className="text-base text-ink">
+            {nearby.length} {nearby.length === 1 ? "battery" : "batteries"} ready to lease
           </p>
           {view === "map" ? (
-            <BatteryMap batteries={nearby} selectedId={selectedId} onSelect={(id) => updateParams({ battery: id })} />
+            <BatteryMap
+              batteries={nearby}
+              selectedId={selectedId}
+              onSelect={(id) => updateParams({ battery: id })}
+              styleId={mapStyle}
+              onStyleChange={(id) => updateParams({ map: id === "color" ? null : id })}
+              onShowList={() => updateParams({ view: null })}
+            />
           ) : (
             <BatteryList batteries={nearby} selectedId={selectedId} onSelect={(id) => updateParams({ battery: id })} />
+          )}
+          {radiusKm < wideRadiusKm && (
+            <Button variant="secondary" onClick={() => setRadiusKm(wideRadiusKm)}>
+              Look farther
+            </Button>
           )}
         </>
       )}

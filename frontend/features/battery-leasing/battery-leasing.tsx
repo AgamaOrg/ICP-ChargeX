@@ -76,7 +76,7 @@ export function LeaseWizardScreen() {
 export function LeasesScreen() {
   return (
     <>
-      <PageHeader title="Your leases" />
+      <PageHeader title="My leases" />
       <div className="px-4 pb-6">
         <Suspense fallback={<LeasePanelSkeleton />}>
           <LeasePanel extendOptions={mockExtendOptions} issueTypes={mockIssueTypes} />

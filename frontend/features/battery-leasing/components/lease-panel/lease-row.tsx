@@ -1,6 +1,6 @@
 import { ListRow } from "@/components/ui/list-row";
 import { StatusPill } from "@/components/ui/status-pill";
-import { formatMoney, formatRelative } from "@/lib/format";
+import { formatRelative } from "@/lib/format";
 import { LEASE_STATUS_PILL } from "@/lib/status";
 import type { Lease } from "@/lib/types/lease";
 
@@ -18,7 +18,7 @@ export function timeLabel(lease: Lease, nowMs: number) {
     case "completed":
       return `Returned ${when}`;
     default:
-      return `Ends ${when}`;
+      return `Bring back ${when}`;
   }
 }
 
@@ -28,13 +28,8 @@ export function LeaseRow({ lease, nowMs, onOpen }: LeaseRowProps) {
     <ListRow
       onClick={() => onOpen(lease.id)}
       title={lease.batteryLabel}
-      subtitle={`${timeLabel(lease, nowMs)} · ${lease.kioskName}`}
-      trailing={
-        <>
-          <StatusPill tone={pill.tone} label={pill.label} />
-          <span className="tabular-nums text-ink">{formatMoney(lease.costMinorUnits)}</span>
-        </>
-      }
+      subtitle={timeLabel(lease, nowMs)}
+      trailing={<StatusPill tone={pill.tone} label={pill.label} />}
     />
   );
 }

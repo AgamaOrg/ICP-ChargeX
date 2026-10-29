@@ -49,7 +49,7 @@ export type PaymentState =
   | { status: "failure"; message: string }
   | { status: "cancelled" };
 
-export type LeaseTab = "active" | "completed" | "overdue";
+export type LeaseTab = "current" | "past";
 
 export type LeaseAction = "extend" | "return" | "report";
 

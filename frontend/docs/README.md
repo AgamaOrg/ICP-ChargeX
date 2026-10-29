@@ -26,7 +26,7 @@ Documentation for the ChargeX web app in `frontend/`. Everything here is fronten
 | [`architecture.md`](./architecture.md) | Stack, folder layout, feature anatomy, dependency rules, server/client boundaries, routing, mock data layer |
 | [`skills.md`](./skills.md) | Required capabilities, per-task skill matrix, pre/post-code checklists |
 | [`glossary.md`](./glossary.md) | Product, ICP, and frontend terms, plus naming rules |
-| [`design.md`](./design.md) | GCash-simple direction, token contract (palette TBD), components, screen blueprints, copy and a11y |
+| [`design.md`](./design.md) | GCash-simple direction, brand palette, tokens and logo, components, screen blueprints, copy and a11y |
 | [`roadmap.md`](./roadmap.md) | Dashboard and Battery Leasing epics, item specs, build order, out-of-scope list |
 
 ---
@@ -78,7 +78,7 @@ The frontend is still the scaffold — no feature code exists yet. Status is own
 
 ## Constraints
 
-- **Palette undecided.** Direction is documented; token values await approval.
+- **Brand palette and logo are set.** See `design.md` §4; use token classes, never raw colours.
 - **No UI, map, chart, or state library.** Each requires approval before install.
 - **Mock data only.** No canister, API, auth, or payment integration.
 - **Read-only git.** The human owns commits, branches, and remotes.

@@ -10,23 +10,24 @@ type StepDetailsProps = {
   onBlur: (field: "contactName" | "contactPhone") => void;
 };
 
+// The contact fields are demo-only: nothing is sent or stored.
 export function StepDetails({ battery, draft, errors, onChange, onBlur }: StepDetailsProps) {
   return (
     <div className="flex flex-col gap-6">
-      <section aria-labelledby="pickup-title" className="flex flex-col gap-2 rounded-md bg-surface-muted p-4">
-        <h3 id="pickup-title" className="text-base font-semibold text-ink">
-          Pick up at {battery.kioskName}
+      <section aria-labelledby="pickup-title" className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-card">
+        <h3 id="pickup-title" className="text-lg font-semibold text-ink">
+          {battery.kioskName}
         </h3>
-        <p className="text-sm text-ink-muted">{battery.location.label}</p>
-        <ol className="list-decimal pl-5 text-sm text-ink">
-          <li>Open the ChargeX app at the kiosk.</li>
-          <li>Show your lease code on the screen.</li>
-          <li>Take {battery.label} from the slot that lights up.</li>
+        <p className="text-base text-ink-muted">{battery.location.label}</p>
+        <ol className="mt-2 flex list-decimal flex-col gap-1 pl-5 text-base text-ink">
+          <li>Go to the kiosk.</li>
+          <li>Show your lease on this phone.</li>
+          <li>Take the battery from the slot that lights up.</li>
         </ol>
       </section>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="mb-2 text-base font-semibold text-ink">Who&apos;s picking it up?</legend>
+        <legend className="mb-2 text-lg font-semibold text-ink">Your name and number</legend>
         <TextField
           label="Name"
           name="contactName"
@@ -42,7 +43,6 @@ export function StepDetails({ battery, draft, errors, onChange, onBlur }: StepDe
           type="tel"
           inputMode="tel"
           autoComplete="tel"
-          hint="Demo only. We won't contact you."
           value={draft.contactPhone}
           error={errors.contactPhone}
           onChange={(event) => onChange("contactPhone", event.target.value)}

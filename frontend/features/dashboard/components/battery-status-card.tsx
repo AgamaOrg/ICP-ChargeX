@@ -58,11 +58,10 @@ export function BatteryStatusCard({ battery }: BatteryStatusCardProps) {
 
 function CardHeading() {
   return (
-    <div className="mb-3 flex items-baseline justify-between gap-2">
+    <div className="mb-3">
       <h2 id="battery-status-title" className="text-base font-semibold text-ink">
         Battery status
       </h2>
-      <span className="text-xs text-ink-muted">Simulated data</span>
     </div>
   );
 }

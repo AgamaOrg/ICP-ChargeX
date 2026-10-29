@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ErrorState } from "@/components/ui/error-state";
 import { Sheet } from "@/components/ui/sheet";
 import { LoadingRegion, Skeleton } from "@/components/ui/skeleton";
-import { StatusPill } from "@/components/ui/status-pill";
-import { formatDateTime, formatDistance, formatMoney, formatPercent } from "@/lib/format";
-import { AVAILABILITY_PILL, BATTERY_STATUS_PILL } from "@/lib/status";
+import { formatDistance, formatMoney, formatPercent } from "@/lib/format";
+import { batteryCondition } from "@/lib/status";
 import type { Battery } from "@/lib/types/battery";
 
 type BatteryDetailsSheetProps = {
@@ -30,7 +29,7 @@ export function BatteryDetailsSheet({ open, battery, onClose }: BatteryDetailsSh
     <Sheet
       open={open}
       onClose={onClose}
-      title={battery ? battery.label : "Battery details"}
+      title={battery ? battery.kioskName : "Battery details"}
       footer={battery ? <DetailsFooter battery={battery} available={available} /> : undefined}
     >
       {battery ? (
@@ -64,51 +63,35 @@ function DetailsBody({ battery }: { battery: Battery }) {
     );
   }
 
-  const availability = AVAILABILITY_PILL[battery.availability];
-  const status = BATTERY_STATUS_PILL[battery.status];
-
+  // Only what a rider needs to decide. Values are demo data (data/mock.ts).
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-center gap-2">
-        <StatusPill tone={availability.tone} label={availability.label} />
-        <StatusPill tone={status.tone} label={status.label} />
-      </div>
-      <p className="text-sm text-ink-muted">
-        {battery.kioskName} · {formatDistance(battery.distanceKm)} away
+    <div className="flex flex-col gap-5">
+      <p className="text-base text-ink-muted">
+        {formatDistance(battery.distanceKm)} away · Battery {battery.label}
       </p>
 
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between text-sm">
-          <span className="text-ink">Charge</span>
-          <span className="font-semibold tabular-nums text-ink">{formatPercent(battery.chargePercent)}</span>
-        </div>
+      <div className="flex flex-col gap-2">
+        <p className="flex items-baseline gap-2">
+          <span className="text-4xl font-semibold tabular-nums text-ink">{formatPercent(battery.chargePercent)}</span>
+          <span className="text-lg text-ink-muted">charged</span>
+        </p>
         <BatteryMeter label="Charge" value={battery.chargePercent} />
-        <p className="text-xs text-ink-muted">How full the battery is right now.</p>
-      </div>
-      <div className="flex flex-col gap-1">
-        <div className="flex justify-between text-sm">
-          <span className="text-ink">Health</span>
-          <span className="font-semibold tabular-nums text-ink">{formatPercent(battery.healthPercent)}</span>
-        </div>
-        <BatteryMeter label="Health" value={battery.healthPercent} size="sm" />
-        <p className="text-xs text-ink-muted">How much capacity it has left compared to new.</p>
       </div>
 
-      <dl className="grid grid-cols-2 gap-3 text-sm">
-        <div>
-          <dt className="text-ink-muted">Estimated range</dt>
-          <dd className="font-medium text-ink">{formatDistance(battery.estimatedRangeKm)}</dd>
-        </div>
-        <div>
-          <dt className="text-ink-muted">Price</dt>
-          <dd className="font-medium text-ink">{formatMoney(battery.pricePerHourMinorUnits)} / hour</dd>
-        </div>
-        <div className="col-span-2">
-          <dt className="text-ink-muted">Last updated</dt>
-          <dd className="text-ink">{formatDateTime(battery.updatedAt)}</dd>
-        </div>
+      <dl className="flex flex-col divide-y divide-line rounded-lg border border-line text-base">
+        <Fact label="You can drive about" value={formatDistance(battery.estimatedRangeKm)} />
+        <Fact label="Price" value={`${formatMoney(battery.pricePerHourMinorUnits)} per hour`} />
+        <Fact label="Battery condition" value={batteryCondition(battery.healthPercent)} />
       </dl>
-      <p className="text-xs text-ink-muted">Demo data.</p>
+    </div>
+  );
+}
+
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3 px-4 py-3">
+      <dt className="text-ink-muted">{label}</dt>
+      <dd className="font-semibold text-ink">{value}</dd>
     </div>
   );
 }
@@ -120,7 +103,7 @@ function DetailsFooter({ battery, available }: { battery: Battery; available: bo
       {available ? (
         <Link
           href={`/batteries/lease?battery=${battery.id}`}
-          className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          className="inline-flex h-14 items-center justify-center rounded-md bg-primary px-4 text-lg font-semibold text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
         >
           Lease this battery
         </Link>
@@ -129,7 +112,7 @@ function DetailsFooter({ battery, available }: { battery: Battery; available: bo
           <Button disabled aria-describedby="lease-unavailable-reason">
             Lease this battery
           </Button>
-          <p id="lease-unavailable-reason" className="text-center text-sm text-ink-muted">
+          <p id="lease-unavailable-reason" className="text-center text-base text-ink-muted">
             {UNAVAILABLE_REASON[battery.availability as Exclude<Battery["availability"], "available">]}
           </p>
         </>
@@ -138,8 +121,8 @@ function DetailsFooter({ battery, available }: { battery: Battery; available: bo
         Directions
       </Button>
       {showDirections && (
-        <p className="text-sm text-ink">
-          {battery.kioskName} is at {battery.location.label}. Turn-by-turn directions are coming soon.
+        <p className="text-base text-ink">
+          {battery.kioskName} is at {battery.location.label}.
         </p>
       )}
     </>

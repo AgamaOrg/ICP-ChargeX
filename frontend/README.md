@@ -81,7 +81,7 @@ Start here: [`docs/README.md`](./docs/README.md).
 - **Frontend only.** Do not touch canister, hardware, deployment, or shared code.
 - **Mock data only.** No API, auth, or payment integration yet.
 - **Ask before** installing packages or changing config, routes, or global design tokens.
-- **No palette yet.** Do not hardcode colors; follow the token contract in `docs/design.md`.
+- **Use the brand tokens.** Palette and logo are in `docs/design.md` §4. Do not hardcode colors.
 
 ---
 

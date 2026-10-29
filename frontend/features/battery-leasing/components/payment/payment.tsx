@@ -40,13 +40,14 @@ export function Payment({ order, methods, state, onPay, onCancel, onReset, onBac
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="rounded-md bg-info-soft p-3 text-sm font-medium text-info">
-        Demo only — no real payment is processed.
+      {/* Required by rules.md §4: never imply a real payment. */}
+      <p className="rounded-md bg-info-soft p-3 text-base font-medium text-info">
+        This is a demo. No money will be taken.
       </p>
 
       <PaymentSummary
         totalMinorUnits={order.totalMinorUnits}
-        summary={`${order.duration.label} · ${order.battery.label} · starts ${order.start.label.toLowerCase()}`}
+        summary={`${order.duration.label} at ${order.battery.kioskName}`}
       />
 
       <PaymentMethod
@@ -59,7 +60,7 @@ export function Payment({ order, methods, state, onPay, onCancel, onReset, onBac
 
       {state.status === "failure" && (
         <div role="alert" className="flex flex-col gap-3 rounded-md bg-danger-soft p-3">
-          <p className="flex gap-2 text-sm text-danger">
+          <p className="flex gap-2 text-base text-danger">
             <span aria-hidden="true">⚠</span>
             {state.message}
           </p>
@@ -80,20 +81,20 @@ export function Payment({ order, methods, state, onPay, onCancel, onReset, onBac
 
       {state.status === "cancelled" ? (
         <div role="status" className="flex flex-col gap-3">
-          <p className="text-sm text-ink">Payment cancelled. Your lease isn&apos;t confirmed yet.</p>
+          <p className="text-base text-ink">Payment stopped. Your lease is not done yet.</p>
           <Button onClick={onReset}>Try again</Button>
           <Button variant="ghost" onClick={onBackToReview}>
-            Back to review
+            Go back
           </Button>
         </div>
       ) : (
         state.status !== "failure" && (
           <div className="flex flex-col gap-2">
             <Button loading={processing} disabled={!method} onClick={() => method && onPay(method)}>
-              {processing ? "Processing payment…" : `Pay ${total}`}
+              {processing ? "Paying…" : `Pay ${total}`}
             </Button>
             <Button variant="ghost" disabled={processing} onClick={onCancel}>
-              Cancel payment
+              Cancel
             </Button>
           </div>
         )

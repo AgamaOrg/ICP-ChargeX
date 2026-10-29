@@ -8,9 +8,9 @@ type PaymentSummaryProps = {
 export function PaymentSummary({ totalMinorUnits, summary }: PaymentSummaryProps) {
   return (
     <div>
-      <p className="text-sm text-ink-muted">Total due</p>
-      <p className="text-3xl font-semibold tabular-nums text-ink">{formatMoney(totalMinorUnits)}</p>
-      <p className="text-sm text-ink-muted">{summary}</p>
+      <p className="text-base text-ink-muted">To pay</p>
+      <p className="text-4xl font-semibold tabular-nums text-ink">{formatMoney(totalMinorUnits)}</p>
+      <p className="text-base text-ink-muted">{summary}</p>
     </div>
   );
 }

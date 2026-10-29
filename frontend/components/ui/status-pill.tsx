@@ -25,7 +25,7 @@ const TONE_GLYPH: Record<StatusTone, string> = {
 export function StatusPill({ tone, label }: StatusPillProps) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${TONE_CLASSES[tone]}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-medium ${TONE_CLASSES[tone]}`}
     >
       <span aria-hidden="true" className="text-[0.6rem]">
         {TONE_GLYPH[tone]}
