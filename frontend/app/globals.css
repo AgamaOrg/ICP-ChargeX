@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — see docs/design.md §4.
+ * Brand palette (Figma "chargex"): Deep Teal #0F4C4C, Green #2EAD7F,
+ * Blue Teal #5DA9C8, Mint #D6EDE2, Charcoal #2B3640, Off White #F7FAF7.
+ * Other neutrals and status colours are derived from it and checked for
+ * WCAG AA contrast. Components use the token names, never raw colours.
+ */
+:root {
+  --canvas: #f7faf7;
+  --surface: #ffffff;
+  --surface-muted: #eef4f1;
+  --line: #d9e4df;
+  --ink: #2b3640;
+  --ink-muted: #56636d;
+
+  --primary: #0f4c4c;
+  --primary-foreground: #ffffff;
+  --primary-soft: #d6ede2;
+
+  /* Brand accents: logo, gradients, charts. Too light for text on white. */
+  --brand-green: #2ead7f;
+  --brand-blue: #5da9c8;
+
+  --success: #1a7a57;
+  --success-soft: #ddf2e8;
+  --warning: #9a5b0b;
+  --warning-soft: #fdf1dc;
+  --danger: #b42318;
+  --danger-soft: #fde7e4;
+  --info: #1e6a8a;
+  --info-soft: #e2f0f6;
+
+  --focus: #2b7fa3;
+  --overlay: rgb(15 38 41 / 0.55);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-brand-green: var(--brand-green);
+  --color-brand-blue: var(--brand-blue);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-focus: var(--focus);
+  --color-overlay: var(--overlay);
+
+  /* shadcn names used by the vendored mapcn component (components/ui/map.tsx).
+     Aliases only: app code uses the ChargeX names above. */
+  --color-background: var(--surface);
+  --color-foreground: var(--ink);
+  --color-muted: var(--surface-muted);
+  --color-muted-foreground: var(--ink-muted);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-accent: var(--surface-muted);
+  --color-border: var(--line);
+  --color-ring: var(--focus);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-card: 0 1px 2px rgb(15 76 76 / 0.05), 0 2px 8px rgb(15 76 76 / 0.06);
+  --shadow-sheet: 0 -4px 24px rgb(15 76 76 / 0.12);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Map styles shipped with mapcn's registry item: popups use our own markup,
+   and the attribution chip follows the tokens. */
+@layer base {
+  .maplibregl-popup-content {
+    @apply rounded-none! bg-transparent! p-0! shadow-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
+  .maplibregl-ctrl-attrib {
+    @apply rounded-md! border! border-line! bg-surface! text-ink-muted! shadow-sm!;
+  }
+  .maplibregl-ctrl-attrib a {
+    @apply text-ink-muted!;
+  }
+  .maplibregl-ctrl-attrib a:hover {
+    @apply text-ink!;
+  }
+  .maplibregl-ctrl-attrib-button {
+    @apply bg-transparent!;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

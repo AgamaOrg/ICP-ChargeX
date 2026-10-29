@@ -1,6 +1,6 @@
 # ChargeX Development Todo List
 
-## 🎯 Project Status: **Planning & Setup Phase**
+## 🎯 Project Status: **Planning &amp; Setup Phase**
 
 > **Last Updated**: January 20, 2025  
 > **WCHL 2025 Deadline**: [Add deadline date]  
@@ -8,9 +8,10 @@
 
 ---
 
-## 📋 **Phase 1: Foundation & Setup** (Weeks 1-2)
+## 📋 **Phase 1: Foundation &amp; Setup** (Weeks 1-2)
 
 ### 🔧 Development Environment
+
 - [ ] **ICP Development Setup**
   - [ ] Install DFX SDK (latest version)
   - [ ] Set up local ICP replica
@@ -31,6 +32,7 @@
   - [ ] Code quality checks
 
 ### 📚 Project Structure
+
 - [x] ✅ Create folder structure
 - [x] ✅ README files for all modules
 - [x] ✅ Contributing guidelines
@@ -44,7 +46,8 @@
 
 ## 🏗️ **Phase 2: Core Backend Development** (Weeks 3-6)
 
-### 🔐 Authentication & Identity
+### 🔐 Authentication &amp; Identity
+
 - [ ] **Internet Identity Integration**
   - [ ] Set up II canister locally
   - [ ] Implement frontend authentication
@@ -52,7 +55,8 @@
   - [ ] Session handling
 
 ### 🔋 Battery Leasing System
-- [ ] **Leasing & Trading Canister**
+
+- [ ] **Leasing &amp; Trading Canister**
   - [ ] ICRC-7 NFT standard implementation
     - [ ] Battery NFT minting
     - [ ] NFT metadata structure
@@ -69,6 +73,7 @@
     - [ ] Refund mechanisms
 
 ### 💱 Energy Trading Marketplace
+
 - [ ] **Trading Engine**
   - [ ] P2P energy offers
   - [ ] Order matching algorithm
@@ -82,15 +87,17 @@
   - [ ] Trading volume tracking
 
 ### 📡 Telemetry Data Management
+
 - [ ] **Telemetry Data Canister**
   - [ ] IoT data ingestion API
   - [ ] Real-time data storage
   - [ ] Historical data queries
-  - [ ] Data validation & sanitization
+  - [ ] Data validation &amp; sanitization
   - [ ] GPS location tracking
   - [ ] Battery health metrics
 
 ### 🤖 AI Inference System
+
 - [ ] **AI Inference Canister**
   - [ ] Predictive maintenance models
     - [ ] Battery degradation prediction
@@ -102,6 +109,7 @@
   - [ ] Alert generation
 
 ### 👤 User Management
+
 - [ ] **User Profile Canister**
   - [ ] User profile management
   - [ ] Preferences storage
@@ -110,6 +118,7 @@
   - [ ] KYC integration (if needed)
 
 ### 🔔 Notification System
+
 - [ ] **Notification Alert Canister**
   - [ ] Alert generation logic
   - [ ] HTTPS outcalls for notifications
@@ -122,6 +131,7 @@
 ## 🖥️ **Phase 3: Frontend Development** (Weeks 4-7)
 
 ### 🎨 Core UI Components
+
 - [ ] **Shared Components**
   - [ ] Button library
   - [ ] Modal system
@@ -131,6 +141,7 @@
   - [ ] Error boundaries
 
 ### 📊 Dashboard Development
+
 - [ ] **Main Dashboard**
   - [ ] Real-time battery status
   - [ ] Active leases display
@@ -139,6 +150,7 @@
   - [ ] Notification center
 
 ### 🔋 Battery Management Interface
+
 - [ ] **Battery Leasing UI**
   - [ ] Available batteries map
   - [ ] Battery details modal
@@ -152,6 +164,7 @@
   - [ ] Maintenance alerts
 
 ### 💰 Trading Interface
+
 - [ ] **Energy Trading UI**
   - [ ] Marketplace browser
   - [ ] Create offer interface
@@ -160,6 +173,8 @@
   - [ ] Trading history
 
 ### 📱 Responsive Design
+
+
 - [ ] **Mobile Optimization**
   - [ ] Mobile-first design
   - [ ] Touch-friendly interfaces
@@ -171,6 +186,7 @@
 ## 🔧 **Phase 4: Hardware Development** (Weeks 6-8)
 
 ### 📟 ESP32 Battery Monitor
+
 - [ ] **Sensor Integration**
   - [ ] INA219/INA226 voltage/current sensors
   - [ ] DS18B20/DHT11 temperature sensors
@@ -189,6 +205,7 @@
   - [ ] Error handling and retry logic
 
 ### 🖥️ Raspberry Pi Kiosk
+
 - [ ] **Hardware Setup**
   - [ ] Touch screen configuration
   - [ ] GPIO control for battery dispensing
@@ -207,6 +224,7 @@
   - [ ] Offline mode
 
 ### 🔋 BMS Integration
+
 - [ ] **Battery Management System**
   - [ ] Communication protocols (I2C/SPI/UART)
   - [ ] Safety monitoring
@@ -215,9 +233,10 @@
 
 ---
 
-## 🧪 **Phase 5: Testing & Quality Assurance** (Weeks 9-10)
+## 🧪 **Phase 5: Testing &amp; Quality Assurance** (Weeks 9-10)
 
 ### 🔍 Unit Testing
+
 - [ ] **Canister Testing**
   - [ ] Rust unit tests for all canisters
   - [ ] Integration tests between canisters
@@ -230,6 +249,7 @@
   - [ ] API integration tests
 
 ### 🔗 Integration Testing
+
 - [ ] **End-to-End Testing**
   - [ ] User journey automation (Playwright/Cypress)
   - [ ] Hardware-software integration
@@ -242,6 +262,7 @@
   - [ ] Environmental testing
 
 ### 🔒 Security Auditing
+
 - [ ] **Security Review**
   - [ ] Canister security audit
   - [ ] Authentication flow review
@@ -251,9 +272,10 @@
 
 ---
 
-## 🚀 **Phase 6: Deployment & Launch** (Weeks 11-12)
+## 🚀 **Phase 6: Deployment &amp; Launch** (Weeks 11-12)
 
 ### 🌐 ICP Mainnet Deployment
+
 - [ ] **Production Deployment**
   - [ ] Mainnet canister deployment
   - [ ] Frontend asset deployment
@@ -261,6 +283,7 @@
   - [ ] Performance monitoring
 
 ### 📱 Hardware Pilot Program
+
 - [ ] **Pilot Testing**
   - [ ] Limited hardware deployment
   - [ ] Beta user testing
@@ -268,6 +291,7 @@
   - [ ] Issue resolution
 
 ### 📖 Documentation Finalization
+
 - [ ] **User Documentation**
   - [ ] User guide completion
   - [ ] Video tutorials
@@ -280,16 +304,18 @@
 
 ---
 
-## 🎯 **Success Metrics & KPIs**
+## 🎯 **Success Metrics &amp; KPIs**
 
 ### Technical Metrics
+
 - [ ] **Performance**
   - [ ] 99.9% uptime target
-  - [ ] <2s response time for all operations
+  - [ ] &lt;2s response time for all operations
   - [ ] Zero critical security vulnerabilities
-  - [ ] <1% error rate
+  - [ ] &lt;1% error rate
 
 ### Business Metrics
+
 - [ ] **User Adoption**
   - [ ] 100+ registered users
   - [ ] 500+ battery leases
@@ -297,6 +323,7 @@
   - [ ] 4.5+ user satisfaction rating
 
 ### WCHL 2025 Specific
+
 - [ ] **Hackathon Deliverables**
   - [ ] Working demo on ICP mainnet
   - [ ] Complete documentation
@@ -306,27 +333,31 @@
 
 ---
 
-## 🚨 **Risks & Mitigation**
+## 🚨 **Risks &amp; Mitigation**
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| ICP Network Issues | High | Local replica fallback, thorough testing |
+
+| Risk                      | Impact | Mitigation                                |
+| ------------------------- | ------ | ----------------------------------------- |
+| ICP Network Issues        | High   | Local replica fallback, thorough testing  |
 | Hardware Component Delays | Medium | Order components early, have alternatives |
-| Security Vulnerabilities | High | Regular audits, secure coding practices |
-| Scope Creep | Medium | Strict MVP focus, feature prioritization |
-| Integration Complexity | Medium | Incremental integration, early testing |
+| Security Vulnerabilities  | High   | Regular audits, secure coding practices   |
+| Scope Creep               | Medium | Strict MVP focus, feature prioritization  |
+| Integration Complexity    | Medium | Incremental integration, early testing    |
+
 
 ---
 
 ## 📞 **Team Coordination**
 
 ### Weekly Sprints
+
 - [ ] **Sprint Planning** (Every Monday)
 - [ ] **Daily Standups** (15 min check-ins)
 - [ ] **Sprint Review** (Every Friday)
 - [ ] **Retrospective** (Continuous improvement)
 
 ### Communication Channels
+
 - [ ] Discord for daily communication
 - [ ] GitHub Issues for bug tracking
 - [ ] GitHub Projects for task management
@@ -344,6 +375,6 @@
 
 ---
 
-**🎯 Current Focus**: Foundation Setup & Core Backend Development  
+**🎯 Current Focus**: Foundation Setup &amp; Core Backend Development  
 **📅 Next Milestone**: Complete ICP canister development by [Date]  
 **🏆 WCHL 2025 Goal**: Fully functional decentralized BaaS platform
